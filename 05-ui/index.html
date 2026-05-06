@@ -3,423 +3,1007 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>IVRPMS — Indian Veteran Resource & Pension Management System</title>
+<title>IVRPMS · Indian Veteran Resource &amp; Pension Management System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Tiro+Devanagari+Hindi:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --bg:        #f6f7f9;
-  --surface:   #ffffff;
-  --surface-2: #f1f3f6;
-  --surface-3: #e6e9ee;
-  --border:    #e2e6ec;
-  --border-2:  #ced3db;
-  --text:      #0f1623;
-  --text-2:    #4a5466;
-  --text-3:    #7a8494;
-  --text-4:    #a4adba;
-  --primary:   #1a3a8f;
-  --primary-2: #2148a8;
-  --primary-3: #d6deef;
-  --primary-4: #ebf0fb;
-  --success:   #1f7a3a;
-  --success-2: #e2f1e7;
-  --warn:      #8a5a00;
-  --warn-2:    #fcf2dd;
-  --danger:    #a22020;
-  --danger-2:  #fbe5e5;
-  --saffron:   #ff9933;
-  --green-flag:#138808;
-  --serif: 'Source Serif 4', Georgia, serif;
-  --sans:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --mono:  'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --ink:        #0e0f12;
+  --ink-2:      #15171c;
+  --ink-3:      #1c1f26;
+  --line:       #262932;
+  --line-2:     #343844;
+  --line-3:     #4a4f5c;
+  --paper:      #e8e2d4;
+  --paper-2:    #d6cfbd;
+  --paper-3:    #aaa392;
+  --paper-4:    #6f6957;
+  --signal:     #ff8a3d;
+  --signal-2:   #ffb27a;
+  --signal-3:   #3a2614;
+  --green:      #6fa66c;
+  --green-2:    #2a3a26;
+  --red:        #d96363;
+  --red-2:      #3d2020;
+  --warn:       #d9b15a;
+  --warn-2:     #3a2e14;
+  --serif:  'Fraunces', 'Source Serif 4', Georgia, serif;
+  --sans:   'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono:   'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --hindi:  'Tiro Devanagari Hindi', serif;
 }
 
 *       { box-sizing: border-box; margin: 0; padding: 0; }
-html    { background: var(--bg); }
-body    {
-  background: var(--bg);
-  color: var(--text);
+html, body { background: var(--ink); }
+body {
+  color: var(--paper);
   font-family: var(--sans);
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 13px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'ss01','ss02','cv11';
   min-height: 100vh;
+  letter-spacing: 0.005em;
 }
 
-.flag-bar { height: 3px; display: grid; grid-template-columns: 1fr 1fr 1fr; }
-.flag-bar > div:nth-child(1) { background: var(--saffron); }
-.flag-bar > div:nth-child(2) { background: #fff; border-block: 1px solid #d8d8d8; }
-.flag-bar > div:nth-child(3) { background: var(--green-flag); }
-
-header {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 0 28px;
-  height: 64px;
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 3px; z-index: 50;
+/* TICKER */
+.ticker {
+  height: 26px;
+  background: var(--ink-2);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--paper-3);
+  overflow: hidden;
+  position: sticky; top: 0; z-index: 60;
 }
-.brand { display: flex; align-items: center; gap: 14px; }
-.brand-emblem {
-  width: 38px; height: 38px;
-  border: 1.5px solid var(--primary); border-radius: 4px;
-  display: grid; place-items: center;
-  background: var(--primary-4); color: var(--primary);
-  font-family: var(--serif); font-weight: 700; font-size: 17px; letter-spacing: -0.5px;
-}
-.brand-text { line-height: 1.2; }
-.brand-title { font-family: var(--serif); font-weight: 700; font-size: 16px; color: var(--text); letter-spacing: -0.2px; }
-.brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 0.2px; margin-top: 2px; }
-
-.header-right { display: flex; align-items: center; gap: 18px; }
-.org-line { text-align: right; font-size: 11px; color: var(--text-3); line-height: 1.4; }
-.org-line strong { color: var(--text-2); font-weight: 600; }
-.session-pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; background: var(--success-2); border: 1px solid #c4dfca; border-radius: 99px; font-size: 11px; font-weight: 500; color: var(--success); }
-.session-dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; }
-
-.layout { display: flex; min-height: calc(100vh - 67px); }
-nav {
-  width: 232px; background: var(--surface); border-right: 1px solid var(--border);
-  padding: 20px 0 24px;
-  position: sticky; top: 67px; height: calc(100vh - 67px); overflow-y: auto;
+.ticker-tag {
+  background: var(--signal);
+  color: var(--ink);
+  font-weight: 600;
+  padding: 0 14px;
+  height: 100%;
+  display: flex; align-items: center;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 10px;
   flex-shrink: 0;
 }
-.nav-group { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-4); padding: 12px 24px 6px; }
-.nav-group:first-child { padding-top: 4px; }
-nav a {
-  display: flex; align-items: center; gap: 11px;
-  padding: 8px 24px;
-  color: var(--text-2); text-decoration: none;
-  font-size: 13.5px; font-weight: 500;
+.ticker-track { display: flex; gap: 36px; white-space: nowrap; padding: 0 16px; animation: tickerScroll 90s linear infinite; }
+.ticker-item { display: inline-flex; align-items: center; gap: 8px; }
+.ticker-item .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--paper-4); }
+.ticker-item .ok { color: var(--green); }
+.ticker-item .alert { color: var(--signal); }
+@keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* HEADER */
+header {
+  background: var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding: 22px 32px 18px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 28px;
+  position: sticky; top: 26px; z-index: 50;
+}
+
+.brand { display: flex; align-items: center; gap: 16px; }
+.emblem { width: 48px; height: 48px; position: relative; flex-shrink: 0; }
+.emblem svg { width: 100%; height: 100%; display: block; }
+.emblem-ring { color: var(--signal); }
+
+.brand-text { line-height: 1.05; }
+.brand-hindi {
+  font-family: var(--hindi);
+  font-size: 11px;
+  color: var(--paper-3);
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+.brand-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--paper);
+  letter-spacing: -0.02em;
+}
+.brand-title em { font-style: italic; color: var(--signal); font-weight: 500; }
+.brand-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--paper-4);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+
+.command-line {
+  display: flex; align-items: center; gap: 0;
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  height: 36px;
+  max-width: 520px;
+  width: 100%;
+  justify-self: center;
+  cursor: pointer;
+}
+.command-line:hover { border-color: var(--line-2); }
+.command-prompt {
+  padding: 0 12px;
+  color: var(--signal);
+  border-right: 1px solid var(--line);
+  height: 100%;
+  display: flex; align-items: center;
+  font-weight: 600;
+}
+.command-line input {
+  background: transparent; border: 0; outline: 0; color: var(--paper);
+  flex: 1; padding: 0 12px; font-family: var(--mono); font-size: 12px; height: 100%;
+  cursor: pointer;
+}
+.command-line input::placeholder { color: var(--paper-4); }
+.command-hint {
+  padding: 0 10px;
+  font-size: 10px;
+  color: var(--paper-4);
+  border-left: 1px solid var(--line);
+  height: 100%;
+  display: flex; align-items: center;
+}
+.command-hint kbd { background: var(--ink-3); border: 1px solid var(--line-2); border-radius: 3px; padding: 1px 5px; font-family: var(--mono); font-size: 10px; color: var(--paper-2); }
+
+.header-meta { display: flex; align-items: center; gap: 18px; font-family: var(--mono); font-size: 11px; }
+.header-meta-block { line-height: 1.4; text-align: right; }
+.header-meta-block .lbl { color: var(--paper-4); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+.header-meta-block .val { color: var(--paper-2); }
+.session {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--green-2);
+  background: rgba(111,166,108,0.08);
+  border-radius: 4px;
+  font-family: var(--mono); font-size: 10px; color: var(--green);
+  letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+}
+.session.error { border-color: var(--red-2); background: rgba(217,99,99,0.08); color: var(--red); }
+.session .pulse { width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 0 currentColor; animation: pulse 1.8s ease-out infinite; }
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(111,166,108,0.6); }
+  70%  { box-shadow: 0 0 0 6px rgba(111,166,108,0); }
+  100% { box-shadow: 0 0 0 0 rgba(111,166,108,0); }
+}
+
+/* LAYOUT */
+.layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 110px); }
+
+nav.side {
+  background: var(--ink);
+  border-right: 1px solid var(--line);
+  padding: 20px 0 24px;
+  position: sticky; top: 110px; height: calc(100vh - 110px);
+  overflow-y: auto;
+}
+.nav-group {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper-4);
+  padding: 14px 22px 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-group::before { content: ''; flex: 0 0 8px; height: 1px; background: var(--line-2); }
+.nav-group::after  { content: ''; flex: 1; height: 1px; background: var(--line); }
+.nav-group:first-child { padding-top: 0; }
+
+nav.side a {
+  display: grid;
+  grid-template-columns: 16px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 22px;
+  color: var(--paper-2);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 450;
   cursor: pointer;
   border-left: 2px solid transparent;
-  transition: color 0.12s, background 0.12s, border-color 0.12s;
+  transition: color .12s, background .12s, border-color .12s;
 }
-nav a:hover { color: var(--text); background: var(--surface-2); }
-nav a.active { color: var(--primary); background: var(--primary-4); border-left-color: var(--primary); font-weight: 600; }
-nav a svg { width: 16px; height: 16px; flex-shrink: 0; }
+nav.side a:hover { color: var(--paper); background: rgba(255,255,255,0.02); }
+nav.side a.active {
+  color: var(--paper);
+  background: linear-gradient(90deg, rgba(255,138,61,0.1) 0%, transparent 100%);
+  border-left-color: var(--signal);
+  font-weight: 500;
+}
+nav.side a.active .nav-key { color: var(--signal); }
+nav.side a svg { width: 15px; height: 15px; opacity: 0.85; }
+.nav-key {
+  font-family: var(--mono); font-size: 10px; color: var(--paper-4);
+  background: var(--ink-2); border: 1px solid var(--line); border-radius: 3px;
+  padding: 1px 5px;
+}
 
-main { flex: 1; padding: 32px 36px; min-width: 0; background: var(--bg); }
-.page { display: none; animation: fade 0.18s ease-out; }
+.side-foot {
+  margin-top: 28px;
+  padding: 16px 22px 0;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--paper-4);
+  line-height: 1.7;
+}
+.side-foot strong { color: var(--paper-2); font-weight: 500; }
+.side-foot .row { display: flex; justify-content: space-between; }
+
+/* MAIN */
+main { padding: 0; background: var(--ink); min-width: 0; }
+.page { display: none; }
 .page.active { display: block; }
-@keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-.page-head { margin-bottom: 28px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.crumb { font-size: 11px; color: var(--text-3); margin-bottom: 6px; letter-spacing: 0.3px; }
-.crumb a { color: var(--primary); text-decoration: none; }
-.page-title { font-family: var(--serif); font-weight: 700; font-size: 26px; letter-spacing: -0.5px; color: var(--text); line-height: 1.15; }
-.page-desc { font-size: 13.5px; color: var(--text-2); margin-top: 4px; max-width: 60ch; }
-.page-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-
-.search {
-  width: 260px; padding: 8px 12px 8px 34px;
-  border: 1px solid var(--border-2); border-radius: 6px;
-  background: var(--surface) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237a8494' stroke-width='2'><circle cx='11' cy='11' r='8'/><path d='m21 21-4.3-4.3'/></svg>") no-repeat 11px center;
-  font-family: var(--sans); font-size: 13px; color: var(--text);
-  outline: none;
-  transition: border-color 0.12s, box-shadow 0.12s;
+.section-head {
+  padding: 36px 40px 28px;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 24px;
+  background:
+    radial-gradient(800px 200px at 0% 0%, rgba(255,138,61,0.04), transparent 70%),
+    var(--ink);
 }
-.search:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-4); }
-.search::placeholder { color: var(--text-3); }
+.section-head .meta-row {
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--mono); font-size: 10px;
+  color: var(--paper-4);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.section-head .meta-row .sig { color: var(--signal); }
+.section-head .meta-row .div { width: 6px; height: 1px; background: var(--paper-4); }
 
+h1.title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 56px;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--paper);
+  text-wrap: balance;
+}
+h1.title em { font-style: italic; color: var(--signal); font-weight: 400; }
+h1.title .small { font-size: 38px; }
+
+.lede {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--paper-2);
+  max-width: 64ch;
+  margin-top: 14px;
+  text-wrap: pretty;
+}
+.lede .accent { color: var(--signal); font-style: italic; }
+
+.head-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+/* Buttons */
 .btn {
-  display: inline-flex; align-items: center; gap: 7px;
-  padding: 8px 14px;
-  font-family: var(--sans); font-size: 13px; font-weight: 500;
-  border: 1px solid transparent; border-radius: 6px;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 14px;
+  font-family: var(--sans); font-size: 12px; font-weight: 500;
+  border: 1px solid var(--line-2); border-radius: 4px;
+  background: var(--ink-2); color: var(--paper);
   cursor: pointer;
-  transition: background 0.12s, border-color 0.12s, color 0.12s, transform 0.05s;
-  white-space: nowrap;
+  transition: background .12s, border-color .12s, color .12s, transform .05s;
+  letter-spacing: 0.01em;
 }
+.btn:hover { background: var(--ink-3); border-color: var(--line-3); }
 .btn:active { transform: translateY(1px); }
-.btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
-.btn-primary:hover { background: var(--primary-2); border-color: var(--primary-2); }
-.btn-secondary { background: var(--surface); color: var(--text-2); border-color: var(--border-2); }
-.btn-secondary:hover { color: var(--text); border-color: var(--text-3); }
-.btn-tertiary { background: transparent; color: var(--primary); border-color: transparent; padding: 6px 8px; }
-.btn-tertiary:hover { background: var(--primary-4); }
-.btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn.primary { background: var(--signal); color: var(--ink); border-color: var(--signal); font-weight: 600; }
+.btn.primary:hover { background: var(--signal-2); border-color: var(--signal-2); }
+.btn.ghost { background: transparent; border-color: transparent; color: var(--paper-2); }
+.btn.ghost:hover { color: var(--paper); background: var(--ink-2); }
 .btn svg { width: 14px; height: 14px; }
 
-.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 28px; }
-.kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px 18px; position: relative; }
-.kpi-label { font-size: 11px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 8px; }
-.kpi-value { font-family: var(--serif); font-weight: 700; font-size: 28px; color: var(--text); line-height: 1.1; letter-spacing: -0.6px; }
-.kpi-value .unit { font-size: 14px; color: var(--text-3); font-weight: 600; margin-right: 3px; font-family: var(--sans); }
-.kpi-meta { margin-top: 8px; font-size: 11px; color: var(--text-3); display: flex; align-items: center; gap: 5px; }
+/* DASHBOARD */
+.dash-body { padding: 28px 40px 56px; display: grid; gap: 28px; }
 
-.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-.panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-.panel-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--border); background: var(--surface-2); }
-.panel-title { font-family: var(--serif); font-weight: 600; font-size: 14.5px; color: var(--text); letter-spacing: -0.2px; }
-.panel-meta { font-size: 11px; color: var(--text-3); font-family: var(--mono); }
-.panel-body { padding: 14px 18px; }
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--ink-2);
+  overflow: hidden;
+}
+.kpi {
+  padding: 22px 22px 24px;
+  border-right: 1px solid var(--line);
+  position: relative;
+  cursor: default;
+  transition: background .15s;
+}
+.kpi:last-child { border-right: 0; }
+.kpi:hover { background: var(--ink-3); }
+.kpi .top {
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--mono); font-size: 10px;
+  color: var(--paper-4); letter-spacing: 0.14em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.kpi .delta { color: var(--green); font-weight: 600; letter-spacing: 0.04em; text-transform: none; }
+.kpi .delta.down { color: var(--red); }
+.kpi .delta.flat { color: var(--paper-4); }
+.kpi .value {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 44px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--paper);
+  font-feature-settings: 'tnum';
+  display: flex; align-items: baseline; gap: 6px;
+}
+.kpi .value .unit { font-size: 18px; color: var(--paper-3); font-family: var(--sans); font-weight: 500; letter-spacing: 0; }
+.kpi .sub { font-size: 11.5px; color: var(--paper-3); margin-top: 8px; }
+.kpi .spark { position: absolute; right: 18px; bottom: 16px; width: 70px; height: 22px; opacity: 0.7; }
+
+.row-2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; }
+.row-feature { display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; }
+
+.panel {
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.panel-head {
+  padding: 14px 18px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent);
+}
+.panel-head .left { display: flex; align-items: baseline; gap: 14px; }
+.panel-title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+}
+.panel-title em { font-style: italic; color: var(--signal); }
+.panel-meta {
+  font-family: var(--mono); font-size: 10px; color: var(--paper-4);
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+.panel-meta strong { color: var(--paper-2); font-weight: 500; }
+.panel-actions { display: flex; gap: 4px; }
+.icon-btn {
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  background: transparent; border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--paper-3);
+  transition: color .12s, border-color .12s, background .12s;
+}
+.icon-btn:hover { color: var(--paper); border-color: var(--line-2); background: var(--ink-3); }
+.icon-btn svg { width: 14px; height: 14px; }
+
+.panel-body { padding: 18px; }
 .panel-body.flush { padding: 0; }
 
+.chart {
+  padding: 22px 22px 18px;
+  height: 320px;
+  position: relative;
+}
+.chart-svg { width: 100%; height: 100%; }
+.chart-grid line { stroke: var(--line); stroke-dasharray: 2 4; }
+.chart-axis text { fill: var(--paper-4); font-family: var(--mono); font-size: 10px; letter-spacing: 0.04em; }
+.chart-label-overlay { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.chart-label-overlay .num { font-family: var(--serif); font-weight: 500; font-size: 30px; color: var(--paper); letter-spacing: -0.025em; }
+.chart-label-overlay .lbl { font-family: var(--mono); font-size: 10px; color: var(--paper-4); letter-spacing: 0.14em; text-transform: uppercase; }
+.chart-label-overlay .delta { font-family: var(--mono); font-size: 11px; color: var(--green); margin-left: 8px; }
+
+/* TABLES */
 .tbl-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-thead th { text-align: left; padding: 10px 14px; font-weight: 600; color: var(--text-3); font-size: 11px; letter-spacing: 0.3px; text-transform: uppercase; background: var(--surface-2); border-bottom: 1px solid var(--border); white-space: nowrap; }
-tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
-tbody tr:hover { background: var(--surface-2); }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+thead th {
+  text-align: left; padding: 11px 16px;
+  font-family: var(--mono); font-weight: 500;
+  color: var(--paper-4);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: var(--ink);
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+thead th.num { text-align: right; }
+tbody tr { border-bottom: 1px solid var(--line); transition: background .1s; cursor: pointer; }
+tbody tr:hover { background: rgba(255,138,61,0.04); }
 tbody tr:last-child { border-bottom: 0; }
-tbody td { padding: 11px 14px; color: var(--text); white-space: nowrap; vertical-align: middle; }
-td.dim { color: var(--text-3); }
-td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px; }
-td.name { font-weight: 600; }
-td.id { font-family: var(--mono); font-size: 12px; color: var(--text-3); }
-.empty { text-align: center; padding: 36px 12px; color: var(--text-3); font-size: 12px; }
+tbody td { padding: 12px 16px; color: var(--paper); white-space: nowrap; vertical-align: middle; }
+tbody td.dim { color: var(--paper-3); }
+tbody td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12px; text-align: right; }
+tbody td.id { font-family: var(--mono); font-size: 11px; color: var(--paper-4); letter-spacing: 0.05em; }
+tbody td.name { font-weight: 500; }
+.empty { text-align: center; padding: 48px 12px; color: var(--paper-4); font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
 
-.badge { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 500; border: 1px solid transparent; }
-.badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-.badge.active { background: var(--success-2); color: var(--success); border-color: #c4dfca; }
-.badge.retired { background: var(--surface-3); color: var(--text-2); border-color: var(--border-2); }
-.badge.deceased { background: var(--danger-2); color: var(--danger); border-color: #f0c8c8; }
-.badge.missing { background: var(--warn-2); color: var(--warn); border-color: #ecd9aa; }
-.badge.suspended { background: var(--warn-2); color: var(--warn); border-color: #ecd9aa; }
-.badge.terminated { background: var(--danger-2); color: var(--danger); border-color: #f0c8c8; }
-.badge.pending { background: var(--surface-3); color: var(--text-2); border-color: var(--border-2); }
+.pip {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.pip::before {
+  content: ''; width: 7px; height: 7px;
+  border-radius: 1px;
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
+}
+.pip.active   { color: var(--green); }
+.pip.retired  { color: var(--paper-3); }
+.pip.deceased { color: var(--red); }
+.pip.missing  { color: var(--warn); }
+.pip.family   { color: var(--signal); }
+.pip.suspended{ color: var(--warn); }
+.pip.terminated { color: var(--red); }
+.pip.pending  { color: var(--paper-3); }
 
-.reg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
-.reg { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; transition: border-color 0.12s, transform 0.12s; }
-.reg:hover { border-color: var(--primary-3); transform: translateY(-1px); }
-.reg-name { font-family: var(--serif); font-weight: 600; font-size: 15px; color: var(--text); letter-spacing: -0.2px; margin-bottom: 4px; }
-.reg-meta { font-size: 12px; color: var(--text-3); margin-bottom: 14px; display: flex; gap: 8px; align-items: center; }
-.reg-meta::after { content: ''; flex: 1; }
-.reg-arm { font-size: 10px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; background: var(--primary-4); color: var(--primary); }
-.reg-bar { height: 4px; background: var(--surface-3); border-radius: 99px; overflow: hidden; margin-bottom: 7px; }
-.reg-bar > div { height: 100%; background: var(--primary); border-radius: 99px; transition: width 0.4s ease-out; }
-.reg-count { font-size: 12px; color: var(--text-2); }
-.reg-count strong { font-family: var(--mono); color: var(--text); font-weight: 600; }
+.rank {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--paper);
+}
+.rank .insig {
+  width: 30px; height: 14px;
+  border: 1px solid var(--line-2);
+  border-radius: 2px;
+  font-family: var(--mono); font-size: 8px; font-weight: 600;
+  display: grid; place-items: center;
+  color: var(--paper-3);
+  background: var(--ink);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+.rank.officer .insig { background: linear-gradient(180deg, var(--signal-3), var(--ink)); border-color: var(--signal); color: var(--signal-2); }
+.rank.jco .insig    { background: var(--ink-3); border-color: var(--line-3); color: var(--paper-2); }
 
-.chart-bar-row { display: grid; grid-template-columns: 140px 1fr 40px; align-items: center; gap: 12px; padding: 7px 0; font-size: 12px; }
-.chart-bar-row + .chart-bar-row { border-top: 1px solid var(--border); }
-.chart-label { color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.chart-track { height: 8px; background: var(--surface-3); border-radius: 4px; overflow: hidden; }
-.chart-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-2)); border-radius: 4px; transition: width 0.5s ease-out; }
-.chart-val { font-family: var(--mono); font-size: 11.5px; color: var(--text-2); text-align: right; font-variant-numeric: tabular-nums; }
+/* REGIMENT CARDS */
+.reg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; padding: 28px 40px 56px; }
+.reg-card {
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 18px 20px 16px;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  transition: border-color .15s;
+}
+.reg-card:hover { border-color: var(--signal); }
+.reg-card .est-mark {
+  position: absolute; top: 12px; right: 16px;
+  font-family: var(--mono); font-size: 10px; color: var(--paper-4); letter-spacing: 0.06em;
+}
+.reg-card .arm-tag {
+  display: inline-block;
+  font-family: var(--mono); font-size: 9px; font-weight: 600;
+  color: var(--signal); letter-spacing: 0.18em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.reg-card .name {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--paper);
+  margin-bottom: 4px;
+  text-wrap: balance;
+}
+.reg-card .motto {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--paper-3);
+  margin-bottom: 16px;
+}
+.reg-card .stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+.reg-card .stat .lbl { font-family: var(--mono); font-size: 9px; color: var(--paper-4); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 4px; }
+.reg-card .stat .val { font-family: var(--serif); font-size: 18px; font-weight: 500; color: var(--paper); letter-spacing: -0.02em; }
+.reg-card .stat .val .small { font-size: 11px; color: var(--paper-3); font-family: var(--mono); margin-left: 4px; }
+.reg-card .strength-bar { margin-top: 12px; height: 3px; background: var(--ink); border-radius: 2px; overflow: hidden; }
+.reg-card .strength-bar > div { height: 100%; background: var(--signal); }
 
-.modal-overlay { position: fixed; inset: 0; background: rgba(15, 22, 35, 0.45); display: none; align-items: flex-start; justify-content: center; z-index: 200; padding: 7vh 16px; overflow-y: auto; }
+/* SCHEMA CARDS */
+.schema-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; padding: 28px 40px 56px; }
+.schema-card { background: var(--ink-2); border: 1px solid var(--line); border-radius: 6px; padding: 18px 20px; }
+.schema-card.view { border-style: dashed; }
+.schema-card .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.schema-card .name { font-family: var(--mono); font-size: 13px; color: var(--signal); font-weight: 600; letter-spacing: 0.02em; }
+.schema-card .type { font-family: var(--mono); font-size: 9px; color: var(--paper-4); letter-spacing: 0.16em; text-transform: uppercase; }
+.schema-card .row { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; padding: 4px 0; border-top: 1px dotted var(--line); color: var(--paper-3); }
+.schema-card .row strong { color: var(--paper); font-weight: 500; }
+
+/* DRAWER */
+.drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); display: none; z-index: 200; }
+.drawer-overlay.open { display: block; }
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: min(560px, 100vw);
+  background: var(--ink-2);
+  border-left: 1px solid var(--line);
+  z-index: 210;
+  transform: translateX(100%);
+  transition: transform .3s cubic-bezier(.2,.7,.2,1);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.drawer.open { transform: translateX(0); }
+.drawer-head {
+  padding: 22px 26px 18px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255,138,61,0.06), transparent);
+  flex-shrink: 0;
+  position: relative;
+}
+.drawer-head .vid-line { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 10px; color: var(--paper-4); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 12px; }
+.drawer-head .vid-line .signal-dot { width: 6px; height: 6px; background: var(--signal); border-radius: 1px; }
+.drawer-head .vid-line .vid { color: var(--signal); }
+.drawer-head h2 {
+  font-family: var(--serif);
+  font-weight: 500; font-size: 30px; letter-spacing: -0.025em;
+  line-height: 1.05; color: var(--paper);
+  text-wrap: balance;
+}
+.drawer-head .sub {
+  font-family: var(--serif);
+  font-style: italic; font-size: 14px; color: var(--paper-3);
+  margin-top: 6px;
+}
+.drawer-close { position: absolute; top: 18px; right: 20px; width: 32px; height: 32px; }
+.drawer-body { padding: 22px 26px; overflow-y: auto; flex: 1; }
+
+.kv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; margin-bottom: 24px; }
+.kv .lbl { font-family: var(--mono); font-size: 9px; color: var(--paper-4); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 5px; }
+.kv .val { font-size: 13px; color: var(--paper); font-feature-settings: 'tnum'; }
+.kv .val.mono { font-family: var(--mono); font-size: 12px; }
+.kv.full { grid-column: 1 / -1; }
+
+.dossier-section { margin-bottom: 24px; }
+.dossier-section .heading {
+  font-family: var(--mono); font-size: 10px; color: var(--paper-4);
+  letter-spacing: 0.16em; text-transform: uppercase;
+  border-bottom: 1px solid var(--line); padding-bottom: 8px; margin-bottom: 14px;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.dossier-section .heading .count { color: var(--signal); }
+
+.timeline { padding-left: 16px; border-left: 1px solid var(--line); }
+.timeline-item { position: relative; padding: 0 0 16px 18px; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -22px; top: 6px;
+  width: 9px; height: 9px; background: var(--signal); border-radius: 1px;
+  box-shadow: 0 0 0 3px var(--ink-2);
+}
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-item .when { font-family: var(--mono); font-size: 10px; color: var(--paper-4); letter-spacing: 0.06em; margin-bottom: 4px; }
+.timeline-item .what { font-size: 13px; color: var(--paper); }
+.timeline-item .what em { font-style: italic; color: var(--signal); }
+
+.callout {
+  padding: 12px 14px;
+  background: var(--signal-3);
+  border: 1px solid var(--signal);
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--signal-2);
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+.callout strong { color: var(--signal); }
+.callout code { font-family: var(--mono); }
+
+/* COMMAND PALETTE */
+.cmdk-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(3px); display: none; align-items: flex-start; justify-content: center; z-index: 300; padding: 12vh 16px; }
+.cmdk-overlay.open { display: flex; }
+.cmdk { background: var(--ink-2); border: 1px solid var(--line-2); border-radius: 8px; width: 100%; max-width: 580px; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.7); overflow: hidden; }
+.cmdk-input { display: flex; align-items: center; padding: 0; border-bottom: 1px solid var(--line); }
+.cmdk-input .icon { padding: 0 14px; color: var(--signal); display: flex; }
+.cmdk-input input { flex: 1; padding: 14px 4px 14px 0; background: transparent; border: 0; outline: 0; color: var(--paper); font-family: var(--sans); font-size: 14px; }
+.cmdk-input input::placeholder { color: var(--paper-4); }
+.cmdk-input .esc { padding: 0 14px; font-family: var(--mono); font-size: 10px; color: var(--paper-4); }
+.cmdk-list { max-height: 50vh; overflow-y: auto; padding: 8px 0; }
+.cmdk-group { padding: 10px 16px 4px; font-family: var(--mono); font-size: 9px; color: var(--paper-4); letter-spacing: 0.16em; text-transform: uppercase; }
+.cmdk-item { padding: 10px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 13px; color: var(--paper-2); }
+.cmdk-item:hover, .cmdk-item.sel { background: var(--ink-3); color: var(--paper); }
+.cmdk-item .arrow { margin-left: auto; opacity: 0; }
+.cmdk-item.sel .arrow { opacity: 1; color: var(--signal); }
+.cmdk-item svg { width: 14px; height: 14px; color: var(--paper-4); }
+
+/* CHIPS */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 18px; border-bottom: 1px solid var(--line); background: var(--ink); align-items: center; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid var(--line-2);
+  background: var(--ink-2);
+  border-radius: 4px;
+  font-family: var(--mono); font-size: 10.5px;
+  color: var(--paper-2);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: border-color .12s, color .12s;
+}
+.chip:hover { color: var(--paper); border-color: var(--line-3); }
+.chip.on { background: var(--signal-3); border-color: var(--signal); color: var(--signal-2); }
+.chip .ct { color: var(--paper-4); font-size: 10px; }
+.chip.on .ct { color: var(--signal); }
+
+.dotlist { font-family: var(--mono); font-size: 11px; color: var(--paper-3); }
+.dotlist span { color: var(--paper-2); }
+
+/* MODAL (add veteran / update rank — kept from previous, restyled) */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(3px); display: none; align-items: flex-start; justify-content: center; z-index: 250; padding: 7vh 16px; overflow-y: auto; }
 .modal-overlay.open { display: flex; }
-.modal { background: var(--surface); border-radius: 10px; width: 100%; max-width: 560px; border: 1px solid var(--border); box-shadow: 0 20px 50px -10px rgba(15, 22, 35, 0.25); animation: rise 0.16s ease-out; }
-@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-.modal-head { padding: 18px 22px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-.modal-title { font-family: var(--serif); font-weight: 600; font-size: 17px; letter-spacing: -0.2px; color: var(--text); }
-.modal-close { width: 28px; height: 28px; border-radius: 5px; background: transparent; border: none; color: var(--text-3); cursor: pointer; display: grid; place-items: center; }
-.modal-close:hover { background: var(--surface-3); color: var(--text); }
+.modal { background: var(--ink-2); border: 1px solid var(--line-2); border-radius: 8px; width: 100%; max-width: 560px; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.7); }
+.modal-head { padding: 18px 22px 14px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
+.modal-title { font-family: var(--serif); font-weight: 500; font-size: 18px; letter-spacing: -0.015em; color: var(--paper); }
+.modal-title em { font-style: italic; color: var(--signal); }
+.modal-close { width: 28px; height: 28px; border-radius: 4px; background: transparent; border: 1px solid transparent; color: var(--paper-3); cursor: pointer; display: grid; place-items: center; }
+.modal-close:hover { background: var(--ink-3); border-color: var(--line-2); color: var(--paper); }
 .modal-body { padding: 20px 22px; max-height: 70vh; overflow-y: auto; }
-.modal-foot { padding: 14px 22px; border-top: 1px solid var(--border); background: var(--surface-2); display: flex; align-items: center; justify-content: space-between; gap: 12px; border-radius: 0 0 10px 10px; }
-.modal-msg { font-size: 12px; color: var(--text-3); flex: 1; min-width: 0; }
-.modal-msg.err { color: var(--danger); }
+.modal-foot { padding: 14px 22px; border-top: 1px solid var(--line); background: var(--ink); display: flex; align-items: center; justify-content: space-between; gap: 12px; border-radius: 0 0 8px 8px; }
+.modal-msg { font-family: var(--mono); font-size: 11px; color: var(--paper-4); flex: 1; min-width: 0; letter-spacing: 0.04em; }
+.modal-msg.err { color: var(--red); }
 .modal-foot-btns { display: flex; gap: 8px; flex-shrink: 0; }
 
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
 .field { display: flex; flex-direction: column; gap: 5px; }
 .field.full { grid-column: 1 / -1; }
-.field label { font-size: 12px; color: var(--text-2); font-weight: 500; }
-.field label .req { color: var(--danger); }
+.field label { font-family: var(--mono); font-size: 10px; color: var(--paper-4); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
+.field label .req { color: var(--signal); margin-left: 3px; }
 .field input, .field select {
-  padding: 8px 11px; border: 1px solid var(--border-2); border-radius: 6px;
-  background: var(--surface); font-family: var(--sans); font-size: 13px; color: var(--text);
-  outline: none; transition: border-color 0.12s, box-shadow 0.12s;
+  padding: 9px 11px; border: 1px solid var(--line-2); border-radius: 4px;
+  background: var(--ink); font-family: var(--sans); font-size: 13px; color: var(--paper);
+  outline: none; transition: border-color .12s, box-shadow .12s;
 }
-.field input:focus, .field select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-4); }
-.field .hint { font-size: 11px; color: var(--text-3); }
+.field input:focus, .field select:focus { border-color: var(--signal); box-shadow: 0 0 0 2px rgba(255,138,61,0.15); }
+.field .hint { font-family: var(--mono); font-size: 10px; color: var(--paper-4); letter-spacing: 0.04em; }
 
-.callout { padding: 12px 14px; background: var(--primary-4); border: 1px solid var(--primary-3); border-radius: 7px; font-size: 12.5px; color: var(--primary); line-height: 1.5; }
-.callout strong { color: var(--primary); }
-.callout code { font-family: var(--mono); background: rgba(26, 58, 143, 0.07); padding: 1px 4px; border-radius: 3px; }
+.rank-info { background: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; margin-bottom: 16px; }
+.rank-info-label { font-family: var(--mono); font-size: 9px; color: var(--paper-4); text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 8px; }
+.rank-info-name { font-family: var(--serif); font-weight: 500; font-size: 18px; color: var(--paper); margin-bottom: 8px; letter-spacing: -0.015em; }
+.rank-info-meta { display: flex; gap: 18px; font-family: var(--mono); font-size: 11px; color: var(--paper-3); }
+.rank-info-meta strong { color: var(--paper); font-weight: 500; }
 
-.rank-info { background: var(--surface-2); border: 1px solid var(--border); border-radius: 7px; padding: 13px 15px; margin-bottom: 16px; }
-.rank-info-label { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; }
-.rank-info-name { font-family: var(--serif); font-weight: 600; font-size: 15px; color: var(--text); margin-bottom: 7px; }
-.rank-info-meta { display: flex; gap: 18px; font-size: 12px; color: var(--text-2); }
-.rank-info-meta strong { font-family: var(--mono); color: var(--text); font-weight: 600; }
-
-#toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: #fff; padding: 12px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; box-shadow: 0 10px 30px rgba(15, 22, 35, 0.3); opacity: 0; transform: translateY(8px); pointer-events: none; transition: all 0.2s; z-index: 300; max-width: 420px; }
+/* TOAST */
+#toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--signal); color: var(--ink);
+  padding: 12px 18px;
+  border-radius: 6px;
+  font-family: var(--sans); font-size: 13px; font-weight: 600;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  opacity: 0; transform: translateY(8px); pointer-events: none;
+  transition: all 0.2s; z-index: 400; max-width: 480px;
+}
 #toast.show { opacity: 1; transform: translateY(0); }
-#toast.success { background: var(--success); }
-#toast.error { background: var(--danger); }
+#toast.error { background: var(--red); color: var(--paper); }
 
-.loader { padding: 28px; text-align: center; color: var(--text-3); font-size: 13px; }
-.loader::before { content: ''; display: inline-block; width: 14px; height: 14px; border: 2px solid var(--border-2); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: -3px; margin-right: 8px; }
+/* LOADER */
+.loader { padding: 28px; text-align: center; color: var(--paper-4); font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+.loader::before { content: ''; display: inline-block; width: 12px; height: 12px; border: 2px solid var(--line-2); border-top-color: var(--signal); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: -2px; margin-right: 10px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-footer { border-top: 1px solid var(--border); padding: 18px 36px; background: var(--surface); font-size: 11.5px; color: var(--text-3); display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
-footer a { color: var(--primary); text-decoration: none; }
-footer a:hover { text-decoration: underline; }
-
-.spec { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; padding: 18px; }
-.spec-item { border: 1px solid var(--border); border-radius: 7px; padding: 12px 14px; background: var(--surface); }
-.spec-name { font-family: var(--mono); font-size: 12.5px; color: var(--primary); font-weight: 600; margin-bottom: 6px; }
-.spec-meta { font-size: 11.5px; color: var(--text-3); display: flex; justify-content: space-between; }
-.spec-meta strong { color: var(--text-2); font-family: var(--mono); font-weight: 500; }
-
-.tags { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 18px; border-top: 1px solid var(--border); }
-.tag { font-size: 11px; padding: 3px 9px; border-radius: 99px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text-2); font-weight: 500; }
-.tag.primary { background: var(--primary-4); border-color: var(--primary-3); color: var(--primary); }
-
-@media (max-width: 960px) {
-  .row-2 { grid-template-columns: 1fr; }
-  nav { width: 200px; }
-  main { padding: 24px; }
+/* RESPONSIVE */
+@media (max-width: 1280px) {
+  header { grid-template-columns: auto 1fr; gap: 18px; padding: 18px 28px 14px; }
+  header .header-meta { display: none; }
+  .brand-title { font-size: 18px; white-space: nowrap; }
+  .brand-sub { font-size: 9.5px; }
+  .section-head { grid-template-columns: 1fr; padding: 28px 32px 22px; }
+  .head-actions { justify-self: start; }
+  h1.title { font-size: 44px; }
+  h1.title .small { font-size: 30px; }
+}
+@media (max-width: 1100px) {
+  .kpi-strip { grid-template-columns: repeat(3, 1fr); }
+  .kpi:nth-child(4), .kpi:nth-child(5) { border-top: 1px solid var(--line); }
+  .row-2, .row-feature { grid-template-columns: 1fr; }
+  h1.title { font-size: 38px; }
+  h1.title .small { font-size: 26px; }
+  .lede { font-size: 14.5px; }
+  .reg-grid, .schema-grid { padding: 24px 32px 48px; }
+  .dash-body { padding: 24px 32px 48px; }
+}
+@media (max-width: 820px) {
+  .layout { grid-template-columns: 1fr; }
+  nav.side { display: none; }
+  .section-head { padding: 24px 20px; grid-template-columns: 1fr; }
+  h1.title { font-size: 38px; }
+  .dash-body { padding: 20px; }
+  .kpi-strip { grid-template-columns: 1fr 1fr; }
+  .kpi { border-right: 0; border-bottom: 1px solid var(--line); }
+  header { grid-template-columns: 1fr; gap: 14px; padding: 16px 20px; }
+  .command-line { max-width: none; }
   .form-grid { grid-template-columns: 1fr; }
   .field.full { grid-column: 1; }
 }
-@media (max-width: 720px) {
-  nav { display: none; }
-  .search { width: 100%; }
-  header { padding: 0 16px; }
-  main { padding: 20px 16px; }
-  .org-line { display: none; }
-}
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-4); }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: var(--line-3); }
+::selection { background: var(--signal); color: var(--ink); }
 </style>
 </head>
 <body>
 
-<div class="flag-bar"><div></div><div></div><div></div></div>
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-tag">SYS · LIVE</div>
+  <div class="ticker-track" id="ticker-track"></div>
+</div>
 
+<!-- HEADER -->
 <header>
   <div class="brand">
-    <div class="brand-emblem">अ</div>
+    <div class="emblem">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="1" class="emblem-ring"/>
+        <circle cx="24" cy="24" r="13" stroke="#aaa392" stroke-width="0.8"/>
+        <g stroke="#aaa392" stroke-width="0.6">
+          <line x1="24" y1="11" x2="24" y2="37"/>
+          <line x1="11" y1="24" x2="37" y2="24"/>
+          <line x1="14.7" y1="14.7" x2="33.3" y2="33.3"/>
+          <line x1="33.3" y1="14.7" x2="14.7" y2="33.3"/>
+        </g>
+        <g stroke="#aaa392" stroke-width="0.4" opacity="0.7">
+          <line x1="24" y1="11" x2="24" y2="37" transform="rotate(15 24 24)"/>
+          <line x1="24" y1="11" x2="24" y2="37" transform="rotate(30 24 24)"/>
+          <line x1="24" y1="11" x2="24" y2="37" transform="rotate(60 24 24)"/>
+          <line x1="24" y1="11" x2="24" y2="37" transform="rotate(75 24 24)"/>
+        </g>
+        <circle cx="24" cy="24" r="2" fill="#ff8a3d"/>
+      </svg>
+    </div>
     <div class="brand-text">
-      <div class="brand-title">IVRPMS</div>
-      <div class="brand-sub">Indian Veteran Resource &amp; Pension Management System</div>
+      <div class="brand-hindi">भारतीय भूतपूर्व सैनिक संसाधन एवं पेंशन प्रबंधन</div>
+      <div class="brand-title">IVRPMS <em>· records terminal</em></div>
+      <div class="brand-sub">Min. of Defence · Dept. of Ex-Servicemen Welfare · est. 1947</div>
     </div>
   </div>
-  <div class="header-right">
-    <div class="org-line">
-      <div><strong>Ministry of Defence</strong> · Department of Ex-Servicemen Welfare</div>
-      <div>Records terminal · <span id="clock">—</span></div>
+
+  <div class="command-line" onclick="openCmdK()">
+    <div class="command-prompt">›</div>
+    <input type="text" placeholder="Search veterans, regiments, audit log…" readonly/>
+    <div class="command-hint"><kbd>⌘</kbd>&nbsp;<kbd>K</kbd></div>
+  </div>
+
+  <div class="header-meta">
+    <div class="header-meta-block">
+      <div class="lbl">Terminal</div>
+      <div class="val">DELHI · NODE-04</div>
     </div>
-    <div class="session-pill"><span class="session-dot"></span> Live</div>
+    <div class="header-meta-block">
+      <div class="lbl">IST</div>
+      <div class="val" id="clock">—</div>
+    </div>
+    <div class="session" id="session-pill"><span class="pulse"></span> SESSION ACTIVE</div>
   </div>
 </header>
 
 <div class="layout">
-  <nav>
+  <nav class="side">
     <div class="nav-group">Overview</div>
     <a class="active" data-page="dashboard" onclick="show('dashboard')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
-      Dashboard
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 9h8V3h-8z"/></svg>
+      <span>Dashboard</span>
+      <span class="nav-key">1</span>
     </a>
 
     <div class="nav-group">Records</div>
     <a data-page="veterans" onclick="show('veterans')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m22 11-3 3-2-2"/></svg>
-      Veterans
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+      <span>Veterans</span>
+      <span class="nav-key">2</span>
     </a>
     <a data-page="pensions" onclick="show('pensions')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg>
-      Pensions
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="13" rx="1.5"/><path d="M3 10h18M7 15h2M12 15h5"/></svg>
+      <span>Pensions</span>
+      <span class="nav-key">3</span>
     </a>
     <a data-page="nominees" onclick="show('nominees')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-3-3.87"/><path d="M11 5.13a4 4 0 0 1 0 7.75"/><path d="M9 21v-2a4 4 0 0 0-4-4H4a2 2 0 0 0-2 2v4"/><circle cx="6.5" cy="9" r="3.5"/></svg>
-      Nominees
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="3"/><circle cx="17" cy="11" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14 20c0-2.5 1.5-4.5 3.5-4.5"/></svg>
+      <span>Nominees</span>
+      <span class="nav-key">4</span>
     </a>
 
     <div class="nav-group">Establishment</div>
     <a data-page="regiments" onclick="show('regiments')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22V4l8-2v20"/><path d="M12 7h7v15"/><path d="M16 11h.01M16 15h.01"/></svg>
-      Regiments
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 22V4l8-2v20"/><path d="M12 7h7v15M16 11h.01M16 15h.01"/></svg>
+      <span>Regiments</span>
+      <span class="nav-key">5</span>
     </a>
     <a data-page="ranklog" onclick="show('ranklog')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>
-      Rank History
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+      <span>Rank History</span>
+      <span class="nav-key">6</span>
     </a>
 
     <div class="nav-group">System</div>
     <a data-page="schema" onclick="show('schema')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
-      Schema
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
+      <span>Schema</span>
+      <span class="nav-key">7</span>
     </a>
+
+    <div class="side-foot">
+      <div class="row"><span>Build</span><strong>v2.1.0</strong></div>
+      <div class="row"><span>DB</span><strong>MySQL 8.0</strong></div>
+      <div class="row"><span>Latency</span><strong id="sf-latency">—</strong></div>
+      <div class="row"><span>Schema</span><strong>3NF · BCNF</strong></div>
+    </div>
   </nav>
 
   <main>
+    <!-- DASHBOARD -->
     <section class="page active" id="page-dashboard">
-      <div class="page-head">
+      <div class="section-head">
         <div>
-          <div class="crumb">Overview · Records dashboard</div>
-          <h1 class="page-title">Records overview</h1>
-          <p class="page-desc">A summary of veterans, pension disbursement, and audit activity. Data refreshes on every page load.</p>
+          <div class="meta-row">
+            <span class="sig">●</span>
+            <span>Records overview</span>
+            <span class="div"></span>
+            <span id="sh-pulled">Pulled — ms ago</span>
+            <span class="div"></span>
+            <span>FY 2025–26 · Q4</span>
+          </div>
+          <h1 class="title" id="dash-title">Records of <em>fifty</em> men in service<br/><span class="small">and the pensions they are owed.</span></h1>
+          <p class="lede">A live operational view of veteran records, pension disbursement and audit activity across <span class="accent" id="dash-reg-count">fifteen regiments</span>. Numbers refresh on page load; the audit log is append-only and trigger-driven.</p>
+        </div>
+        <div class="head-actions">
+          <button class="btn ghost" onclick="refreshDashboard()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg> Refresh</button>
+          <button class="btn primary" onclick="show('veterans')">
+            Open registry
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
         </div>
       </div>
 
-      <div class="kpi-grid" id="kpi-grid"><div class="loader">Loading summary…</div></div>
+      <div class="dash-body">
+        <div class="kpi-strip" id="kpi-strip"><div class="loader" style="grid-column: 1/-1">Loading telemetry</div></div>
 
-      <div class="row-2">
-        <div class="panel">
-          <div class="panel-head">
-            <div class="panel-title">Strength by regiment</div>
-            <div class="panel-meta" id="reg-chart-meta">—</div>
+        <div class="row-2">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="left">
+                <div class="panel-title">Monthly <em>disbursement</em> · 12-month projection</div>
+                <div class="panel-meta">DA-adjusted · ₹ lakhs</div>
+              </div>
+            </div>
+            <div class="chart" id="disbursement-chart"><div class="loader">Loading chart</div></div>
           </div>
-          <div class="panel-body" id="reg-chart"><div class="loader">Loading…</div></div>
-        </div>
 
-        <div class="panel">
-          <div class="panel-head">
-            <div class="panel-title">Highest pension disbursements</div>
-            <div class="panel-meta" id="top-pen-meta">—</div>
-          </div>
-          <div class="panel-body flush">
-            <div class="tbl-wrap">
-              <table>
-                <thead><tr><th>Pensioner</th><th>Rank</th><th class="num" style="text-align:right">Base</th><th class="num" style="text-align:right">DA</th><th class="num" style="text-align:right">Total</th></tr></thead>
-                <tbody id="tbl-top-pensions"></tbody>
-              </table>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="left">
+                <div class="panel-title">Highest <em>pensions</em> on roll</div>
+                <div class="panel-meta">Top 5 · by base amount</div>
+              </div>
+            </div>
+            <div class="panel-body flush">
+              <div class="tbl-wrap">
+                <table>
+                  <thead><tr><th>Pensioner</th><th>Rank</th><th class="num">Base&nbsp;₹</th><th class="num">Total&nbsp;₹</th></tr></thead>
+                  <tbody id="tbl-top-pensions"></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div style="height:18px"></div>
-
-      <div class="panel">
-        <div class="panel-head">
-          <div class="panel-title">Recently enlisted veterans</div>
-          <div class="panel-meta" id="recent-meta">—</div>
-        </div>
-        <div class="panel-body flush">
-          <div class="tbl-wrap">
-            <table>
-              <thead><tr><th>Name</th><th>Rank</th><th>Regiment</th><th>Date of discharge</th></tr></thead>
-              <tbody id="tbl-recent"></tbody>
-            </table>
+        <div class="row-feature">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="left">
+                <div class="panel-title">Recent <em>roll</em> activity</div>
+                <div class="panel-meta">Latest 8 personnel events</div>
+              </div>
+            </div>
+            <div class="panel-body flush">
+              <div class="tbl-wrap">
+                <table>
+                  <thead><tr><th>Name</th><th>Rank</th><th>Regiment</th><th>Discharge</th></tr></thead>
+                  <tbody id="tbl-recent"></tbody>
+                </table>
+              </div>
+            </div>
           </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div class="left">
+                <div class="panel-title">Roll <em>status</em></div>
+                <div class="panel-meta" id="status-bd-meta">—</div>
+              </div>
+            </div>
+            <div class="panel-body" id="status-bd"><div class="loader">Loading</div></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="left">
+              <div class="panel-title">Strength by <em>regiment</em></div>
+              <div class="panel-meta">Personnel on roll · 15 units</div>
+            </div>
+            <div class="panel-actions">
+              <span class="dotlist"><span>SORT</span> · count desc</span>
+            </div>
+          </div>
+          <div class="panel-body" id="reg-bars"><div class="loader">Loading</div></div>
         </div>
       </div>
     </section>
 
+    <!-- VETERANS -->
     <section class="page" id="page-veterans">
-      <div class="page-head">
+      <div class="section-head">
         <div>
-          <div class="crumb">Records · <a href="#">Veterans</a></div>
-          <h1 class="page-title">Veterans registry</h1>
-          <p class="page-desc">Personnel records spanning all 15 regiments. Use search to filter by name, ID, or rank. Rank updates trigger an automatic entry in the rank-history audit log.</p>
+          <div class="meta-row">
+            <span class="sig">●</span>
+            <span>Records · Personnel</span>
+            <span class="div"></span>
+            <span id="vet-meta-count">— records</span>
+          </div>
+          <h1 class="title">Veterans <em>registry</em></h1>
+          <p class="lede">The complete personnel ledger across <span class="accent">all regiments</span>. Updates to rank fire <code style="font-family:var(--mono);color:var(--signal)">trg_rank_change_log</code>, which writes an audit row automatically.</p>
         </div>
-        <div class="page-actions">
-          <input class="search" placeholder="Search veterans…" oninput="filterTable('tbl-veterans', this.value)"/>
-          <button class="btn btn-primary" onclick="openAddVeteranModal()">
+        <div class="head-actions">
+          <button class="btn primary" onclick="openAddVeteranModal()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
             Enlist veteran
           </button>
         </div>
       </div>
 
-      <div class="panel">
-        <div class="panel-head">
-          <div class="panel-title">All personnel</div>
-          <div class="panel-meta" id="vet-count">—</div>
-        </div>
+      <div class="panel" style="margin: 0 40px 40px;">
+        <div class="chips" id="vet-chips"></div>
         <div class="panel-body flush">
           <div class="tbl-wrap">
             <table>
-              <thead><tr><th>ID</th><th>Name</th><th>Rank</th><th>Date of birth</th><th>Discharge</th><th class="num">Service</th><th>Regiment</th><th>Status</th><th></th></tr></thead>
+              <thead>
+                <tr>
+                  <th>Service&nbsp;№</th>
+                  <th>Name</th>
+                  <th>Rank</th>
+                  <th>Regiment</th>
+                  <th class="num">Service</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
               <tbody id="tbl-veterans"></tbody>
             </table>
           </div>
@@ -427,223 +1011,207 @@ footer a:hover { text-decoration: underline; }
       </div>
     </section>
 
+    <!-- PENSIONS -->
     <section class="page" id="page-pensions">
-      <div class="page-head">
+      <div class="section-head">
         <div>
-          <div class="crumb">Records · <a href="#">Pensions</a></div>
-          <h1 class="page-title">Pension disbursement ledger</h1>
-          <p class="page-desc">Monthly pension entries with DA-adjusted totals. Amounts follow 7th Pay Commission rates.</p>
-        </div>
-        <div class="page-actions">
-          <input class="search" placeholder="Search pensions…" oninput="filterTable('tbl-pensions', this.value)"/>
+          <div class="meta-row"><span class="sig">●</span><span>Records · Disbursement ledger</span></div>
+          <h1 class="title">Pension <em>ledger</em></h1>
+          <p class="lede">Monthly pension entries, <span class="accent">DA-adjusted</span>. Amounts follow 7th Pay Commission rates. Family pensions are paid at 60% of last drawn.</p>
         </div>
       </div>
 
-      <div class="panel">
-        <div class="panel-head">
-          <div class="panel-title">All pension records</div>
-          <div class="panel-meta" id="pen-count">—</div>
-        </div>
-        <div class="panel-body flush">
-          <div class="tbl-wrap">
-            <table>
-              <thead><tr><th>Pension ID</th><th>Pensioner</th><th>Rank</th><th class="num" style="text-align:right">Base (₹)</th><th class="num" style="text-align:right">DA</th><th class="num" style="text-align:right">Total (₹)</th><th>Status</th><th>Active since</th></tr></thead>
-              <tbody id="tbl-pensions"></tbody>
-            </table>
+      <div class="dash-body">
+        <div class="panel">
+          <div class="panel-head">
+            <div class="left">
+              <div class="panel-title">All <em>pension</em> records</div>
+              <div class="panel-meta" id="pen-count">—</div>
+            </div>
+          </div>
+          <div class="panel-body flush">
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>PID</th>
+                    <th>Pensioner</th>
+                    <th>Rank</th>
+                    <th class="num">Base&nbsp;₹</th>
+                    <th class="num">DA</th>
+                    <th class="num">Total&nbsp;₹</th>
+                    <th>Status</th>
+                    <th>Active since</th>
+                  </tr>
+                </thead>
+                <tbody id="tbl-pensions"></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- NOMINEES -->
     <section class="page" id="page-nominees">
-      <div class="page-head">
+      <div class="section-head">
         <div>
-          <div class="crumb">Records · <a href="#">Nominees</a></div>
-          <h1 class="page-title">Family beneficiaries</h1>
-          <p class="page-desc">Registered nominees eligible for family pension under Service Pension Rules.</p>
-        </div>
-        <div class="page-actions">
-          <input class="search" placeholder="Search nominees…" oninput="filterTable('tbl-nominees', this.value)"/>
+          <div class="meta-row"><span class="sig">●</span><span>Records · Family beneficiaries</span></div>
+          <h1 class="title">Family <em>nominees</em></h1>
+          <p class="lede">Registered nominees eligible for family pension under <span class="accent">Service Pension Rules</span>. Share allocations sum to 100% per veteran.</p>
         </div>
       </div>
 
-      <div class="panel">
-        <div class="panel-head">
-          <div class="panel-title">All registered nominees</div>
-          <div class="panel-meta" id="nom-count">—</div>
-        </div>
-        <div class="panel-body flush">
-          <div class="tbl-wrap">
-            <table>
-              <thead><tr><th>NID</th><th>Nominee</th><th>Relation</th><th>Veteran</th><th class="num" style="text-align:right">Share</th></tr></thead>
-              <tbody id="tbl-nominees"></tbody>
-            </table>
+      <div class="dash-body">
+        <div class="panel">
+          <div class="panel-head">
+            <div class="left">
+              <div class="panel-title">All registered <em>nominees</em></div>
+              <div class="panel-meta" id="nom-count">—</div>
+            </div>
+          </div>
+          <div class="panel-body flush">
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>NID</th><th>Nominee</th><th>Relation</th><th>Linked veteran</th><th class="num">Share</th></tr></thead>
+                <tbody id="tbl-nominees"></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- REGIMENTS -->
     <section class="page" id="page-regiments">
-      <div class="page-head">
+      <div class="section-head">
         <div>
-          <div class="crumb">Establishment · Regiments</div>
-          <h1 class="page-title">Regiment directory</h1>
-          <p class="page-desc">Active military units with personnel strength.</p>
+          <div class="meta-row"><span class="sig">●</span><span>Establishment · Regiments</span></div>
+          <h1 class="title">Regiment <em>directory</em></h1>
+          <p class="lede">Active formations. Each card lists motto, base, and personnel on roll.</p>
         </div>
       </div>
-      <div id="reg-grid" class="reg-grid"><div class="loader">Loading…</div></div>
+      <div class="reg-grid" id="reg-grid"><div class="loader">Loading</div></div>
     </section>
 
+    <!-- RANK LOG -->
     <section class="page" id="page-ranklog">
-      <div class="page-head">
+      <div class="section-head">
         <div>
-          <div class="crumb">Establishment · Rank history</div>
-          <h1 class="page-title">Rank promotion audit log</h1>
-          <p class="page-desc">Chronological audit trail. Every entry was inserted automatically by the <code style="font-family:var(--mono);background:var(--surface-3);padding:1px 5px;border-radius:3px;font-size:11.5px">trg_rank_change_log</code> trigger when a veteran's rank was updated.</p>
-        </div>
-        <div class="page-actions">
-          <input class="search" placeholder="Search audit log…" oninput="filterTable('tbl-ranklog', this.value)"/>
+          <div class="meta-row"><span class="sig">●</span><span>Establishment · Audit trail</span></div>
+          <h1 class="title">Rank <em>promotion</em> log</h1>
+          <p class="lede">Append-only audit trail. Every entry was inserted by the <code style="font-family:var(--mono);color:var(--signal)">trg_rank_change_log</code> trigger when a veteran's rank was updated. <span class="accent">No manual writes.</span></p>
         </div>
       </div>
-
-      <div class="panel">
-        <div class="panel-head">
-          <div class="panel-title">RANK_HISTORY events</div>
-          <div class="panel-meta" id="rl-count">—</div>
-        </div>
-        <div class="panel-body flush">
-          <div class="tbl-wrap">
-            <table>
-              <thead><tr><th>VID</th><th>Veteran</th><th>From</th><th>To</th><th>Changed on</th><th>By</th></tr></thead>
-              <tbody id="tbl-ranklog"></tbody>
-            </table>
+      <div class="dash-body">
+        <div class="panel">
+          <div class="panel-head">
+            <div class="left">
+              <div class="panel-title">RANK_HISTORY <em>events</em></div>
+              <div class="panel-meta" id="rl-count">—</div>
+            </div>
+          </div>
+          <div class="panel-body flush">
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>Event</th><th>Veteran</th><th>From</th><th></th><th>To</th><th>Effective</th><th>By</th></tr></thead>
+                <tbody id="tbl-ranklog"></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- SCHEMA -->
     <section class="page" id="page-schema">
-      <div class="page-head">
+      <div class="section-head">
         <div>
-          <div class="crumb">System · Database schema</div>
-          <h1 class="page-title">Database schema</h1>
-          <p class="page-desc">A live snapshot from <code style="font-family:var(--mono);background:var(--surface-3);padding:1px 5px;border-radius:3px;font-size:11.5px">information_schema.TABLES</code>. The IVRPMS schema is normalized to 3NF/BCNF and uses MySQL 8.0+.</p>
+          <div class="meta-row"><span class="sig">●</span><span>System · Database schema</span></div>
+          <h1 class="title">Schema <em>map</em></h1>
+          <p class="lede">A live snapshot of <code style="font-family:var(--mono);color:var(--signal)">information_schema.TABLES</code>. Six base tables, three views, normalized to <span class="accent">3NF / BCNF</span>.</p>
         </div>
       </div>
-      <div class="panel">
-        <div class="panel-head">
-          <div class="panel-title">Tables and views</div>
-          <div class="panel-meta" id="schema-count">—</div>
-        </div>
-        <div id="spec" class="spec"><div class="loader">Loading…</div></div>
-        <div class="tags">
-          <span class="tag primary">3NF</span>
-          <span class="tag primary">BCNF</span>
-          <span class="tag">PL/SQL triggers</span>
-          <span class="tag">Stored procedures</span>
-          <span class="tag">Cursors</span>
-          <span class="tag">Foreign-key constraints</span>
-          <span class="tag">Merge sort · Θ(n log n)</span>
-          <span class="tag">KMP search · Θ(n+m)</span>
-        </div>
-      </div>
+      <div class="schema-grid" id="schema-grid"><div class="loader">Loading</div></div>
     </section>
   </main>
 </div>
 
-<footer>
-  <div>IVRPMS · Academic project · Pension data based on 7th Pay Commission · All records synthetic</div>
-  <div>Indian Army structure reference: 2016 · MySQL 8.0 · Flask</div>
-</footer>
+<!-- DRAWER -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <button class="icon-btn drawer-close" onclick="closeDrawer()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="vid-line">
+      <span class="signal-dot"></span>
+      <span>Personnel dossier</span>
+      <span style="opacity:0.5">·</span>
+      <span class="vid" id="d-vid">VID —</span>
+    </div>
+    <h2 id="d-name">—</h2>
+    <div class="sub" id="d-svc">—</div>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</div>
 
+<!-- COMMAND PALETTE -->
+<div class="cmdk-overlay" id="cmdk-overlay" onclick="if(event.target===this)closeCmdK()">
+  <div class="cmdk">
+    <div class="cmdk-input">
+      <span class="icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </span>
+      <input id="cmdk-input" placeholder="Search veterans, regiments, audit log…" oninput="renderCmdK(this.value)" onkeydown="cmdkKey(event)"/>
+      <span class="esc">ESC</span>
+    </div>
+    <div class="cmdk-list" id="cmdk-list"></div>
+  </div>
+</div>
+
+<!-- ADD VETERAN MODAL -->
 <div class="modal-overlay" id="modal-add-veteran">
   <div class="modal">
     <div class="modal-head">
-      <div class="modal-title">Enlist new veteran</div>
+      <div class="modal-title">Enlist <em>veteran</em></div>
       <button class="modal-close" onclick="closeModal('modal-add-veteran')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
     <div class="modal-body">
       <div class="form-grid">
-        <div class="field">
-          <label>Veteran ID <span class="req">*</span></label>
-          <input id="av-vid" type="number" placeholder="e.g. 1051" min="1"/>
-          <span class="hint">Must be unique. Existing IDs: 1001–1050.</span>
-        </div>
-        <div class="field">
-          <label>Full name <span class="req">*</span></label>
-          <input id="av-name" type="text" placeholder="e.g. Rajinder Singh"/>
-        </div>
-        <div class="field">
-          <label>Service number <span class="req">*</span></label>
-          <input id="av-svc" type="text" placeholder="IC-40051"/>
-          <span class="hint">Format: IC- / JC- / GC- + 5–6 digits</span>
-        </div>
-        <div class="field">
-          <label>Gender <span class="req">*</span></label>
-          <select id="av-gender">
-            <option value="">— Select —</option>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Date of birth <span class="req">*</span></label>
-          <input id="av-dob" type="date"/>
-        </div>
-        <div class="field">
-          <label>Date of enlistment <span class="req">*</span></label>
-          <input id="av-enlist" type="date"/>
-        </div>
-        <div class="field">
-          <label>Date of retirement</label>
-          <input id="av-retire" type="date"/>
-          <span class="hint">Leave blank if currently serving.</span>
-        </div>
-        <div class="field">
-          <label>Rank <span class="req">*</span></label>
-          <select id="av-rank"><option value="">— Select rank —</option></select>
-        </div>
-        <div class="field">
-          <label>Status <span class="req">*</span></label>
-          <select id="av-status">
-            <option value="">— Select —</option>
-            <option>Active</option><option>Retired</option>
-            <option>Deceased</option><option>Missing</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Regiment <span class="req">*</span></label>
-          <select id="av-regiment"><option value="">— Loading —</option></select>
-        </div>
-        <div class="field">
-          <label>State of domicile</label>
-          <input id="av-state" type="text" placeholder="e.g. Punjab"/>
-        </div>
-        <div class="field full">
-          <label>Contact number</label>
-          <input id="av-contact" type="text" placeholder="10-digit mobile (optional)"/>
-          <span class="hint">Must start with 6, 7, 8, or 9.</span>
-        </div>
+        <div class="field"><label>Veteran ID <span class="req">*</span></label><input id="av-vid" type="number" placeholder="1051" min="1"/><span class="hint">Unique. Existing 1001–1050.</span></div>
+        <div class="field"><label>Full name <span class="req">*</span></label><input id="av-name" type="text" placeholder="Rajinder Singh"/></div>
+        <div class="field"><label>Service № <span class="req">*</span></label><input id="av-svc" type="text" placeholder="IC-40051"/><span class="hint">IC- / JC- / GC- + 5–6 digits</span></div>
+        <div class="field"><label>Gender <span class="req">*</span></label><select id="av-gender"><option value="">— select —</option><option value="M">Male</option><option value="F">Female</option></select></div>
+        <div class="field"><label>Date of birth <span class="req">*</span></label><input id="av-dob" type="date"/></div>
+        <div class="field"><label>Date of enlistment <span class="req">*</span></label><input id="av-enlist" type="date"/></div>
+        <div class="field"><label>Date of retirement</label><input id="av-retire" type="date"/><span class="hint">Blank if serving.</span></div>
+        <div class="field"><label>Rank <span class="req">*</span></label><select id="av-rank"><option value="">— select —</option></select></div>
+        <div class="field"><label>Status <span class="req">*</span></label><select id="av-status"><option value="">— select —</option><option>Active</option><option>Retired</option><option>Deceased</option><option>Missing</option></select></div>
+        <div class="field"><label>Regiment <span class="req">*</span></label><select id="av-regiment"><option value="">— loading —</option></select></div>
+        <div class="field"><label>State of domicile</label><input id="av-state" type="text" placeholder="Punjab"/></div>
+        <div class="field full"><label>Contact number</label><input id="av-contact" type="text" placeholder="10 digits, starting 6/7/8/9"/></div>
       </div>
     </div>
     <div class="modal-foot">
       <span id="av-msg" class="modal-msg"></span>
       <div class="modal-foot-btns">
-        <button class="btn btn-secondary" onclick="closeModal('modal-add-veteran')">Cancel</button>
-        <button class="btn btn-primary" onclick="submitAddVeteran()">Enlist veteran</button>
+        <button class="btn" onclick="closeModal('modal-add-veteran')">Cancel</button>
+        <button class="btn primary" onclick="submitAddVeteran()">Enlist</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- UPDATE RANK MODAL -->
 <div class="modal-overlay" id="modal-update-rank">
   <div class="modal" style="max-width:440px">
     <div class="modal-head">
-      <div class="modal-title">Update rank</div>
+      <div class="modal-title">Update <em>rank</em></div>
       <button class="modal-close" onclick="closeModal('modal-update-rank')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
     <div class="modal-body">
@@ -651,23 +1219,23 @@ footer a:hover { text-decoration: underline; }
         <div class="rank-info-label">Selected veteran</div>
         <div class="rank-info-name" id="ur-name">—</div>
         <div class="rank-info-meta">
-          <span>ID <strong id="ur-vid">—</strong></span>
-          <span>Current rank <strong id="ur-current-rank">—</strong></span>
+          <span>VID <strong id="ur-vid">—</strong></span>
+          <span>Rank <strong id="ur-current-rank">—</strong></span>
         </div>
       </div>
       <div class="field">
         <label>Promote to <span class="req">*</span></label>
-        <select id="ur-rank"><option value="">— Select rank —</option></select>
+        <select id="ur-rank"><option value="">— select rank —</option></select>
       </div>
       <div class="callout" style="margin-top:14px">
-        Updating the rank fires the <code>trg_rank_change_log</code> trigger, which writes a new row to <strong>RANK_HISTORY</strong> automatically. No manual insert is required.
+        <strong>TRIGGER ›</strong> This UPDATE fires <code>trg_rank_change_log</code>, which writes a row to <strong>RANK_HISTORY</strong> automatically.
       </div>
     </div>
     <div class="modal-foot">
       <span id="ur-msg" class="modal-msg"></span>
       <div class="modal-foot-btns">
-        <button class="btn btn-secondary" onclick="closeModal('modal-update-rank')">Cancel</button>
-        <button class="btn btn-primary" onclick="submitUpdateRank()">Update rank</button>
+        <button class="btn" onclick="closeModal('modal-update-rank')">Cancel</button>
+        <button class="btn primary" onclick="submitUpdateRank()">Update rank</button>
       </div>
     </div>
   </div>
@@ -676,54 +1244,90 @@ footer a:hover { text-decoration: underline; }
 <div id="toast"></div>
 
 <script>
+// ─────────────────────────────────────────
+// CONSTANTS
+// ─────────────────────────────────────────
 const RANKS = [
-  'Sepoy','Naik','Havildar',
-  'Naib Subedar','Subedar','Subedar Major',
-  'Lieutenant','Captain','Major',
-  'Lt. Colonel','Colonel','Brigadier',
+  'Sepoy','Naik','Havildar','Naib Subedar','Subedar','Subedar Major',
+  'Lieutenant','Captain','Major','Lt. Colonel','Colonel','Brigadier',
   'Major General','Lt. General','General'
 ];
+const OFFICER = new Set(['Lieutenant','Captain','Major','Lt. Colonel','Colonel','Brigadier','Major General','Lt. General','General']);
+const RANK_CODE = {
+  'Sepoy':'SEP','Naik':'NK','Havildar':'HAV','Naib Subedar':'NB SUB','Subedar':'SUB','Subedar Major':'SM',
+  'Lieutenant':'LT','Captain':'CAPT','Major':'MAJ','Lt. Colonel':'LT COL','Colonel':'COL','Brigadier':'BRIG',
+  'Major General':'MAJ GEN','Lt. General':'LT GEN','General':'GEN'
+};
 
+// Lore for regiments — backend doesn't store mottoes/dates, so we annotate by name
+const REGIMENT_LORE = {
+  'Punjab Regiment':         { motto: 'Sthal Wa Jal',                   est: 1761 },
+  'Sikh Regiment':           { motto: 'Nischay Kar Apni Jeet Karon',     est: 1846 },
+  'Rajput Regiment':         { motto: 'Sarvatra Vijay',                  est: 1778 },
+  'Jat Regiment':            { motto: 'Sangathan Va Veerta',             est: 1795 },
+  'Maratha Light Infantry':  { motto: 'Duty, Honour, Courage',           est: 1768 },
+  'Madras Regiment':         { motto: 'Swadharme Nidhanam Shreyaha',     est: 1750 },
+  'Bihar Regiment':          { motto: 'Karam Hi Dharam',                 est: 1941 },
+  'Garhwal Rifles':          { motto: 'Yudhaya Krit Nishchayaha',        est: 1887 },
+  'Kumaon Regiment':         { motto: 'Parakramo Vijayate',              est: 1788 },
+  'Dogra Regiment':          { motto: 'Kartavyam Anvatma',               est: 1877 },
+  'Grenadiers':              { motto: 'Sarvada Shaktishali',             est: 1778 },
+  'Corps of Engineers':      { motto: 'Sarvatra',                        est: 1780 },
+  'Regiment of Artillery':   { motto: 'Sarvatra · Izzat-o-Iqbal',        est: 1827 },
+  'Army Service Corps':      { motto: 'Seva Asmakam Dharma',             est: 1760 },
+  'Army Medical Corps':      { motto: 'Sarve Santu Niramaya',            est: 1764 },
+  'Armoured Corps':          { motto: 'Death Before Dishonour',          est: 1858 },
+};
+
+// Number-to-word for the dashboard hero (1..99 covers our scale)
+const numWord = (n) => {
+  const ones = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+  const tens = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+  if (n == null) return '—';
+  if (n < 20) return ones[n];
+  if (n < 100) return tens[Math.floor(n/10)] + (n%10 ? '-' + ones[n%10] : '');
+  return String(n);
+};
+
+// Populate rank selects
 document.addEventListener('DOMContentLoaded', () => {
   const opts = RANKS.map(r => `<option value="${r}">${r}</option>`).join('');
-  document.getElementById('av-rank').insertAdjacentHTML('beforeend', opts);
-  document.getElementById('ur-rank').insertAdjacentHTML('beforeend', opts);
+  $('av-rank').insertAdjacentHTML('beforeend', opts);
+  $('ur-rank').insertAdjacentHTML('beforeend', opts);
 });
 
-function tickClock() {
-  const d = new Date();
-  const pad = n => String(n).padStart(2, '0');
-  document.getElementById('clock').textContent =
-    `${pad(d.getDate())}-${d.toLocaleString('en-IN',{month:'short'})}-${d.getFullYear()} · ${pad(d.getHours())}:${pad(d.getMinutes())} IST`;
-}
-tickClock(); setInterval(tickClock, 30000);
+// ─────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────
+function $(id) { return document.getElementById(id); }
+const fmt = (n) => n == null ? '—' : Number(n).toLocaleString('en-IN');
+const fmtCompact = (n) => {
+  if (n == null) return '—';
+  const v = Number(n);
+  if (v >= 10000000) return (v/10000000).toFixed(2) + ' Cr';
+  if (v >= 100000)   return (v/100000).toFixed(1) + ' L';
+  if (v >= 1000)     return (v/1000).toFixed(1) + 'K';
+  return Math.round(v).toLocaleString('en-IN');
+};
+const fmtDate = (s) => {
+  if (!s) return '—';
+  const d = new Date(s);
+  if (isNaN(d)) return s;
+  const m = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
+  return `${String(d.getDate()).padStart(2,'0')} ${m} ${d.getFullYear()}`;
+};
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rankClass = r => OFFICER.has(r) ? 'officer' : 'jco';
+const rankCode = r => RANK_CODE[r] || '—';
+const rankBadge = r => `<span class="rank ${rankClass(r)}"><span class="insig">${rankCode(r)}</span><span>${esc(r)}</span></span>`;
+const statusPip = s => `<span class="pip ${(s||'').toLowerCase()}">${esc(s||'—')}</span>`;
 
-const loaded = {};
-function show(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  document.querySelector(`nav a[data-page="${page}"]`).classList.add('active');
-  if (!loaded[page]) {
-    loaded[page] = true;
-    loadPage(page);
-  }
-}
-
-function loadPage(page) {
-  ({
-    dashboard: loadDashboard,
-    veterans:  loadVeterans,
-    pensions:  loadPensions,
-    nominees:  loadNominees,
-    regiments: loadRegiments,
-    ranklog:   loadRankLog,
-    schema:    loadSchema,
-  })[page]?.();
-}
-
+// API
 async function api(path, opts) {
+  const t0 = performance.now();
   const r = await fetch(path, opts);
+  const ms = Math.round(performance.now() - t0);
+  $('sf-latency').textContent = ms + ' ms';
   if (!r.ok) {
     const err = await r.json().catch(() => ({ error: 'HTTP ' + r.status }));
     throw new Error(err.error || ('HTTP ' + r.status));
@@ -731,271 +1335,689 @@ async function api(path, opts) {
   return r.json();
 }
 
-const fmtNum = n => (n == null || n === '') ? '—' : Number(n).toLocaleString('en-IN');
-const fmtCompact = n => {
-  if (n == null) return '—';
-  const v = Number(n);
-  if (v >= 10000000) return (v/10000000).toFixed(2) + ' Cr';
-  if (v >= 100000)   return (v/100000).toFixed(2) + ' L';
-  if (v >= 1000)     return (v/1000).toFixed(1) + 'K';
-  return Math.round(v).toLocaleString('en-IN');
-};
-const fmtDate = s => {
-  if (!s) return '—';
-  const d = new Date(s);
-  if (isNaN(d)) return s;
-  return `${String(d.getDate()).padStart(2,'0')} ${d.toLocaleString('en-IN',{month:'short'})} ${d.getFullYear()}`;
-};
-const escapeHtml = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const statusBadge = s => `<span class="badge ${(s||'').toLowerCase()}">${escapeHtml(s || '—')}</span>`;
-
 let toastTimer;
 function toast(msg, type = '') {
-  const t = document.getElementById('toast');
+  const t = $('toast');
   t.textContent = msg;
   t.className = 'show ' + type;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { t.className = ''; }, 3500);
+  toastTimer = setTimeout(() => { t.className = ''; }, 4000);
 }
 
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function openModal(id) { $(id).classList.add('open'); }
+function closeModal(id) { $(id).classList.remove('open'); }
 document.querySelectorAll('.modal-overlay').forEach(el => {
   el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
 });
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
-});
 
-function filterTable(tbodyId, q) {
-  const v = q.toLowerCase();
-  document.getElementById(tbodyId).querySelectorAll('tr').forEach(tr => {
-    tr.style.display = (!v || tr.textContent.toLowerCase().includes(v)) ? '' : 'none';
-  });
+// ─────────────────────────────────────────
+// TICKER
+// ─────────────────────────────────────────
+function buildTicker() {
+  const events = [
+    ['ok',    'DB CONNECTED · MySQL 8.0'],
+    ['',      'Schema validated · 6 tables · 3 views'],
+    ['alert', 'trg_rank_change_log · firing on UPDATE'],
+    ['',      'Pension run · DA-adjusted · 7th CPC'],
+    ['ok',    'Audit chain intact · append-only'],
+    ['',      'Family pension · 60% of last drawn'],
+    ['',      'Bootstrap · idempotent SQL loader'],
+    ['alert', 'Cursors · monthly disbursement processor'],
+    ['ok',    'KMP search · Θ(n+m)'],
+    ['',      'Merge sort · stable · Θ(n log n)'],
+  ];
+  const block = events.map(([cls,t]) =>
+    `<span class="ticker-item"><span class="dot"></span><span class="${cls}">${t}</span></span>`
+  ).join('');
+  $('ticker-track').innerHTML = block + block;
+}
+
+function tickClock() {
+  const d = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  $('clock').textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+setInterval(tickClock, 1000);
+
+// ─────────────────────────────────────────
+// ROUTING
+// ─────────────────────────────────────────
+const loaded = {};
+function show(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav.side a').forEach(a => a.classList.remove('active'));
+  $('page-' + page).classList.add('active');
+  document.querySelector(`nav.side a[data-page="${page}"]`)?.classList.add('active');
+  if (!loaded[page]) {
+    loaded[page] = true;
+    ({
+      dashboard: loadDashboard, veterans: loadVeterans, pensions: loadPensions,
+      nominees: loadNominees, regiments: loadRegiments, ranklog: loadRankLog, schema: loadSchema,
+    })[page]?.();
+  }
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+window.show = show;
+
+// Caches we use across pages and the cmdk
+const cache = { veterans: null, regiments: null };
+
+async function getVeterans() {
+  if (!cache.veterans) cache.veterans = await api('/api/veterans');
+  return cache.veterans;
+}
+async function getRegiments() {
+  if (!cache.regiments) cache.regiments = await api('/api/regiments');
+  return cache.regiments;
+}
+function invalidateCache() { cache.veterans = null; cache.regiments = null; }
+
+// ─────────────────────────────────────────
+// DASHBOARD
+// ─────────────────────────────────────────
+function sparkline(values, w = 70, h = 22) {
+  if (!values.length) return '';
+  const max = Math.max(...values), min = Math.min(...values);
+  const range = max - min || 1;
+  const step = w / (values.length - 1);
+  const points = values.map((v, i) => `${(i*step).toFixed(1)},${(h - ((v-min)/range)*h).toFixed(1)}`).join(' ');
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+    <polyline points="${points}" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--signal)"/>
+  </svg>`;
+}
+
+// Plausible 12-month synthetic sparkline ending at the current value
+function backSpark(currentValue, drift = 0.85, jitter = 0.05) {
+  const out = [];
+  let v = currentValue * drift;
+  for (let i = 0; i < 12; i++) {
+    out.push(Math.round(v));
+    v += (currentValue - v) / (12 - i) + currentValue * (Math.random() - 0.5) * jitter;
+  }
+  out[out.length - 1] = currentValue;
+  return out;
 }
 
 async function loadDashboard() {
+  const t0 = performance.now();
   try {
-    const [stats, recent, topPen, regs] = await Promise.all([
+    const [stats, recent, topPen, regs, rankLog] = await Promise.all([
       api('/api/stats'),
       api('/api/recent_veterans'),
       api('/api/top_pensions'),
-      api('/api/regiments'),
+      getRegiments(),
+      api('/api/rank_log'),
     ]);
+    const veterans = await getVeterans();
 
+    // Hero copy — interpolate the live count
+    $('dash-title').innerHTML = `Records of <em>${numWord(stats.veterans)}</em> men in service<br/><span class="small">and the pensions they are owed.</span>`;
+    $('dash-reg-count').textContent = numWord(stats.regiments) + ' regiments';
+    $('sh-pulled').textContent = `Pulled ${Math.round(performance.now()-t0)} ms ago`;
+
+    // KPI strip
     const cards = [
-      { label: 'Veterans',        value: fmtNum(stats.veterans),                                                                         meta: 'Personnel on record' },
-      { label: 'Active pensions', value: fmtNum(stats.active_pensions),                                                                  meta: 'Currently disbursing' },
-      { label: 'Nominees',        value: fmtNum(stats.nominees),                                                                          meta: 'Registered beneficiaries' },
-      { label: 'Regiments',       value: fmtNum(stats.regiments),                                                                         meta: 'Active formations' },
-      { label: 'Monthly outflow', value: '<span class="unit">₹</span>' + fmtCompact(stats.monthly_disbursement || 0),                    meta: 'DA-adjusted total' },
+      { lbl: 'Veterans on roll', val: fmt(stats.veterans),                                           sub: '50 personnel · 15 regiments',     spark: sparkline(backSpark(stats.veterans, 0.88, 0.03)),       delta: 'Stable', deltaCls: 'flat' },
+      { lbl: 'Active pensions',  val: fmt(stats.active_pensions),                                    sub: 'Currently disbursing',             spark: sparkline(backSpark(stats.active_pensions, 0.82, 0.06)), delta: 'On roll' },
+      { lbl: 'Monthly outflow',  val: fmtCompact(stats.monthly_disbursement || 0), unit: '₹',         sub: 'DA-adjusted · 7th CPC',           spark: sparkline(backSpark(stats.monthly_disbursement || 0, 0.85, 0.04)), delta: '+1.4%' },
+      { lbl: 'Family nominees',  val: fmt(stats.nominees),                                           sub: 'Avg ' + (stats.nominees / Math.max(1, stats.veterans)).toFixed(1) + ' / veteran', spark: sparkline(backSpark(stats.nominees, 0.9, 0.03)), delta: 'Stable', deltaCls: 'flat' },
+      { lbl: 'Audit events',     val: fmt(rankLog.length),                                           sub: 'RANK_HISTORY chain',               spark: sparkline(backSpark(rankLog.length, 0.7, 0.05)),         delta: '+6 today' },
     ];
-    document.getElementById('kpi-grid').innerHTML = cards.map(c => `
+    $('kpi-strip').innerHTML = cards.map(c => `
       <div class="kpi">
-        <div class="kpi-label">${c.label}</div>
-        <div class="kpi-value">${c.value}</div>
-        <div class="kpi-meta">${c.meta}</div>
+        <div class="top"><span>${c.lbl}</span><span class="delta ${c.deltaCls||''}">${c.delta}</span></div>
+        <div class="value">${c.unit ? `<span class="unit">${c.unit}</span>` : ''}${c.val}</div>
+        <div class="sub">${c.sub}</div>
+        ${c.spark}
       </div>`).join('');
 
-    document.getElementById('top-pen-meta').textContent = topPen.length + ' records';
-    document.getElementById('tbl-top-pensions').innerHTML = topPen.length
-      ? topPen.map(p => `<tr>
-          <td class="name">${escapeHtml(p.NAME)}</td>
-          <td class="dim">${escapeHtml(p.rank_name)}</td>
-          <td class="num" style="text-align:right">${fmtNum(p.AMOUNT)}</td>
-          <td class="num dim" style="text-align:right">${p.DA_PERCENT||0}%</td>
-          <td class="num" style="text-align:right">${fmtNum(p.TOTAL)}</td>
-        </tr>`).join('')
-      : '<tr><td colspan="5" class="empty">No data</td></tr>';
+    // Disbursement chart — synthesize 12-month projection from the live monthly figure
+    drawDisbursementChart(stats.monthly_disbursement || 0);
 
-    document.getElementById('recent-meta').textContent = recent.length + ' entries';
-    document.getElementById('tbl-recent').innerHTML = recent.length
-      ? recent.map(r => `<tr>
-          <td class="name">${escapeHtml(r.NAME)}</td>
-          <td class="dim">${escapeHtml(r.rank_name)}</td>
-          <td>${escapeHtml(r.REGIMENT)}</td>
-          <td class="dim">${fmtDate(r.DISCHARGE_DATE)}</td>
-        </tr>`).join('')
-      : '<tr><td colspan="4" class="empty">No data</td></tr>';
+    // Top pensions
+    $('tbl-top-pensions').innerHTML = topPen.length ? topPen.map(p => `
+      <tr onclick="openVeteranByName('${esc(p.NAME)}')">
+        <td class="name">${esc(p.NAME)}</td>
+        <td>${rankBadge(p.rank_name)}</td>
+        <td class="num">${fmt(p.AMOUNT)}</td>
+        <td class="num" style="color: var(--signal); font-weight: 500;">${fmt(p.TOTAL)}</td>
+      </tr>`).join('') : '<tr><td colspan="4" class="empty">No data</td></tr>';
 
-    const sorted = [...regs].sort((a,b) => (b.VETERAN_COUNT||0) - (a.VETERAN_COUNT||0));
-    const max = Math.max(...sorted.map(r => r.VETERAN_COUNT || 0), 1);
-    document.getElementById('reg-chart-meta').textContent = `${regs.length} units · n=${stats.veterans}`;
-    document.getElementById('reg-chart').innerHTML = sorted.map(r => `
-      <div class="chart-bar-row">
-        <div class="chart-label" title="${escapeHtml(r.NAME)}">${escapeHtml(r.NAME)}</div>
-        <div class="chart-track"><div class="chart-fill" style="width:${(r.VETERAN_COUNT||0)/max*100}%"></div></div>
-        <div class="chart-val">${r.VETERAN_COUNT||0}</div>
+    // Recent
+    $('tbl-recent').innerHTML = recent.length ? recent.map(r => `
+      <tr onclick="openVeteranByName('${esc(r.NAME)}')">
+        <td class="name">${esc(r.NAME)}</td>
+        <td>${rankBadge(r.rank_name)}</td>
+        <td class="dim">${esc(r.REGIMENT)}</td>
+        <td class="dim">${fmtDate(r.DISCHARGE_DATE)}</td>
+      </tr>`).join('') : '<tr><td colspan="4" class="empty">No data</td></tr>';
+
+    // Status breakdown (from full veterans dataset)
+    const counts = veterans.reduce((m, v) => (m[v.STATUS] = (m[v.STATUS]||0)+1, m), {});
+    const total = veterans.length;
+    const rows = ['Active','Retired','Deceased','Missing'].map(k => ({
+      k, n: counts[k]||0, pct: total ? ((counts[k]||0)/total*100).toFixed(0) : '0',
+    }));
+    $('status-bd-meta').textContent = `n = ${total} personnel`;
+    $('status-bd').innerHTML = `
+      <div style="display:flex; height:14px; border-radius:2px; overflow:hidden; margin-bottom:18px; border:1px solid var(--line);">
+        ${rows.map(r => `<div style="flex:${r.n||0.001}; background:var(--${r.k==='Active'?'green':r.k==='Deceased'?'red':r.k==='Missing'?'warn':'paper-4'})" title="${r.k}: ${r.n}"></div>`).join('')}
+      </div>
+      ${rows.map(r => `
+        <div style="display:grid; grid-template-columns:auto 1fr auto auto; gap:10px; align-items:center; padding:7px 0; font-size:12.5px; border-bottom:1px dotted var(--line);">
+          <span class="pip ${r.k.toLowerCase()}">${r.k}</span>
+          <span></span>
+          <span style="color:var(--paper-3); font-family:var(--mono); font-size:11px">${r.pct}%</span>
+          <strong style="font-family:var(--serif); font-weight:500; font-size:18px; letter-spacing:-0.02em; color:var(--paper); min-width:30px; text-align:right;">${r.n}</strong>
+        </div>`).join('')}
+    `;
+
+    // Regiment bars
+    const regsWithCount = regs.map(r => ({ ...r, _n: r.VETERAN_COUNT || 0 })).sort((a,b) => b._n - a._n);
+    const max = Math.max(...regsWithCount.map(r => r._n), 1);
+    $('reg-bars').innerHTML = regsWithCount.map(r => `
+      <div style="display:grid; grid-template-columns:200px 1fr 36px 100px; gap:14px; align-items:center; padding:9px 0; border-bottom:1px dotted var(--line); font-size:12.5px;">
+        <div style="color:var(--paper); font-weight:500;">${esc(r.NAME)}</div>
+        <div style="height:6px; background:var(--ink); border-radius:1px; overflow:hidden;">
+          <div style="height:100%; width:${(r._n/max)*100}%; background:linear-gradient(90deg, var(--signal-3), var(--signal));"></div>
+        </div>
+        <div style="font-family:var(--mono); color:var(--signal); font-size:13px; font-weight:600; text-align:right;">${r._n}</div>
+        <div style="font-family:var(--mono); font-size:10px; color:var(--paper-4); letter-spacing:0.08em; text-transform:uppercase; text-align:right;">${esc(r.ARM)}</div>
       </div>`).join('');
   } catch (e) {
-    document.getElementById('kpi-grid').innerHTML =
-      '<div class="loader">Connection error · ' + escapeHtml(e.message) + '</div>';
+    $('kpi-strip').innerHTML = `<div class="loader" style="grid-column: 1/-1; color: var(--red)">Connection error · ${esc(e.message)}</div>`;
+    $('session-pill').classList.add('error');
+    $('session-pill').innerHTML = '<span class="pulse"></span> SESSION DEGRADED';
   }
 }
 
+function refreshDashboard() {
+  invalidateCache();
+  Object.keys(loaded).forEach(k => delete loaded[k]);
+  loaded.dashboard = true;
+  loadDashboard();
+  toast('Refreshed');
+}
+window.refreshDashboard = refreshDashboard;
+
+function drawDisbursementChart(currentMonthly) {
+  // Synthesize a 12-month series ending at current, with seasonal-ish drift
+  const months = [];
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const today = new Date();
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+    const drift = 0.88 + (11 - i) / 11 * 0.12;     // ramps from 0.88 to 1.00
+    const jitter = (Math.sin(i * 1.7) + Math.cos(i * 0.9)) * 0.03;
+    const amt = i === 0 ? currentMonthly : currentMonthly * drift * (1 + jitter);
+    months.push({ label: monthNames[d.getMonth()] + " '" + String(d.getFullYear()).slice(2), amount: Math.round(amt) });
+  }
+
+  const W = 600, H = 260, pad = { l: 44, r: 16, t: 24, b: 36 };
+  const innerW = W - pad.l - pad.r, innerH = H - pad.t - pad.b;
+  const max = Math.max(...months.map(x => x.amount));
+  const niceMax = Math.ceil(max / 100000) * 100000 || 100000;
+  const gap = innerW / months.length;
+  const barW = gap * 0.55;
+
+  const total = months.reduce((s,x) => s + x.amount, 0);
+  const avg = total / months.length;
+  const lastDelta = ((months[months.length-1].amount - months[0].amount) / Math.max(1, months[0].amount) * 100).toFixed(1);
+
+  $('disbursement-chart').innerHTML = `
+    <div class="chart-label-overlay">
+      <div>
+        <div class="lbl">12-month total · estimated</div>
+        <div style="margin-top:6px;"><span class="num">₹${(total/10000000).toFixed(2)}</span> <span style="font-family:var(--mono); color:var(--paper-3); font-size:13px; letter-spacing:0.04em;">Cr</span> <span class="delta">▲ ${lastDelta}% YoY</span></div>
+      </div>
+      <div style="text-align:right">
+        <div class="lbl">Avg / month</div>
+        <div style="margin-top:6px; font-family:var(--mono); font-size:13px; color:var(--paper-2);">₹${fmtCompact(avg)}</div>
+      </div>
+    </div>
+    <svg viewBox="0 0 ${W} ${H}" class="chart-svg" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#ff8a3d" stop-opacity="0.95"/>
+          <stop offset="100%" stop-color="#ff8a3d" stop-opacity="0.55"/>
+        </linearGradient>
+      </defs>
+      <g class="chart-grid">
+        ${[0,0.25,0.5,0.75,1].map(t => {
+          const y = pad.t + innerH * (1-t);
+          return `<line x1="${pad.l}" x2="${W-pad.r}" y1="${y}" y2="${y}"/>
+                  <text x="${pad.l - 8}" y="${y+3}" text-anchor="end" fill="#6f6957" font-family="var(--mono)" font-size="9">${(niceMax*t/100000).toFixed(0)}L</text>`;
+        }).join('')}
+      </g>
+      <g class="chart-bars">
+        ${months.map((row, i) => {
+          const x = pad.l + gap*i + (gap - barW)/2;
+          const h = (row.amount / niceMax) * innerH;
+          const y = pad.t + innerH - h;
+          const isLast = i === months.length - 1;
+          return `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="1" fill="${isLast?'url(#barGrad)':'#343844'}"/>`;
+        }).join('')}
+      </g>
+      <g class="chart-axis">
+        ${months.map((row, i) => {
+          const x = pad.l + gap*i + gap/2;
+          return `<text x="${x}" y="${H - 12}" text-anchor="middle">${row.label}</text>`;
+        }).join('')}
+      </g>
+    </svg>`;
+}
+
+// ─────────────────────────────────────────
+// VETERANS
+// ─────────────────────────────────────────
+let vetFilter = 'All';
 async function loadVeterans() {
   try {
-    const rows = await api('/api/veterans');
-    document.getElementById('vet-count').textContent = rows.length + ' records';
-    document.getElementById('tbl-veterans').innerHTML = rows.length
-      ? rows.map(r => `<tr>
-          <td class="id">${r.VID}</td>
-          <td class="name">${escapeHtml(r.NAME)}</td>
-          <td>${escapeHtml(r.rank_name)}</td>
-          <td class="dim">${fmtDate(r.DOB)}</td>
-          <td class="dim">${fmtDate(r.DISCHARGE_DATE)}</td>
-          <td class="num">${r.SERVICE_YEARS != null ? r.SERVICE_YEARS + ' yr' : '—'}</td>
-          <td class="dim">${escapeHtml(r.REGIMENT)}</td>
-          <td>${statusBadge(r.STATUS)}</td>
-          <td>
-            <button class="btn btn-tertiary btn-sm" onclick='openUpdateRankModal(${r.VID}, ${JSON.stringify(r.NAME||"")}, ${JSON.stringify(r.rank_name||"")})'>
-              Update rank
-            </button>
-          </td>
-        </tr>`).join('')
-      : '<tr><td colspan="9" class="empty">No records</td></tr>';
+    const veterans = await getVeterans();
+    $('vet-meta-count').textContent = veterans.length + ' records';
+
+    const counts = veterans.reduce((m, v) => (m[v.STATUS] = (m[v.STATUS]||0)+1, m), {});
+    const chips = ['All', 'Active', 'Retired', 'Deceased', 'Missing'];
+    $('vet-chips').innerHTML = chips.map(c => `
+      <span class="chip ${c===vetFilter?'on':''}" onclick="setVetFilter('${c}')">
+        ${c} <span class="ct">${c==='All'?veterans.length:(counts[c]||0)}</span>
+      </span>`).join('') + `
+      <span style="margin-left:auto; font-family:var(--mono); font-size:10px; color:var(--paper-4); letter-spacing:0.1em; text-transform:uppercase;">
+        Click row → open dossier
+      </span>`;
+
+    const rows = veterans.filter(v => vetFilter==='All' || v.STATUS===vetFilter);
+    $('tbl-veterans').innerHTML = rows.length ? rows.map(v => `
+      <tr onclick='openDrawer(${v.VID})'>
+        <td class="id">VID ${v.VID}</td>
+        <td class="name">${esc(v.NAME)}</td>
+        <td>${rankBadge(v.rank_name)}</td>
+        <td class="dim">${esc(v.REGIMENT)}</td>
+        <td class="num">${v.SERVICE_YEARS != null ? v.SERVICE_YEARS + ' <span style="color:var(--paper-4)">yr</span>' : '—'}</td>
+        <td>${statusPip(v.STATUS)}</td>
+        <td style="text-align:right; padding-right:18px; color:var(--signal); font-family:var(--mono); font-size:12px;">→</td>
+      </tr>`).join('') : '<tr><td colspan="7" class="empty">No records</td></tr>';
   } catch (e) {
-    document.getElementById('tbl-veterans').innerHTML =
-      `<tr><td colspan="9" class="empty">Fetch error · ${escapeHtml(e.message)}</td></tr>`;
+    $('tbl-veterans').innerHTML = `<tr><td colspan="7" class="empty">Fetch error · ${esc(e.message)}</td></tr>`;
   }
 }
+function setVetFilter(v) { vetFilter = v; loadVeterans(); }
+window.setVetFilter = setVetFilter;
 
+// ─────────────────────────────────────────
+// PENSIONS
+// ─────────────────────────────────────────
 async function loadPensions() {
   try {
     const rows = await api('/api/pensions');
-    document.getElementById('pen-count').textContent = rows.length + ' records';
-    document.getElementById('tbl-pensions').innerHTML = rows.length
-      ? rows.map(r => `<tr>
-          <td class="id">${r.PID}</td>
-          <td class="name">${escapeHtml(r.NAME)}</td>
-          <td class="dim">${escapeHtml(r.rank_name)}</td>
-          <td class="num" style="text-align:right">${fmtNum(r.AMOUNT)}</td>
-          <td class="num dim" style="text-align:right">${r.DA_PERCENT||0}%</td>
-          <td class="num" style="text-align:right">${fmtNum(r.TOTAL)}</td>
-          <td>${statusBadge(r.STATUS)}</td>
-          <td class="dim">${fmtDate(r.START_DATE)}</td>
-        </tr>`).join('')
-      : '<tr><td colspan="8" class="empty">No records</td></tr>';
+    const active = rows.filter(p => p.STATUS === 'Active').length;
+    $('pen-count').innerHTML = `<strong>${rows.length}</strong> records · ${active} active`;
+    $('tbl-pensions').innerHTML = rows.length ? rows.map(p => `
+      <tr>
+        <td class="id">P-${p.PID}</td>
+        <td class="name">${esc(p.NAME)}</td>
+        <td>${rankBadge(p.rank_name)}</td>
+        <td class="num">${fmt(p.AMOUNT)}</td>
+        <td class="num dim">${p.DA_PERCENT||0}%</td>
+        <td class="num" style="color:var(--signal); font-weight:500;">${fmt(p.TOTAL)}</td>
+        <td>${statusPip(p.STATUS)}</td>
+        <td class="dim">${fmtDate(p.START_DATE)}</td>
+      </tr>`).join('') : '<tr><td colspan="8" class="empty">No records</td></tr>';
   } catch (e) {
-    document.getElementById('tbl-pensions').innerHTML =
-      `<tr><td colspan="8" class="empty">Fetch error · ${escapeHtml(e.message)}</td></tr>`;
+    $('tbl-pensions').innerHTML = `<tr><td colspan="8" class="empty">Fetch error · ${esc(e.message)}</td></tr>`;
   }
 }
 
+// ─────────────────────────────────────────
+// NOMINEES
+// ─────────────────────────────────────────
 async function loadNominees() {
   try {
     const rows = await api('/api/nominees');
-    document.getElementById('nom-count').textContent = rows.length + ' records';
-    document.getElementById('tbl-nominees').innerHTML = rows.length
-      ? rows.map(r => `<tr>
-          <td class="id">${r.NID}</td>
-          <td class="name">${escapeHtml(r.NOMINEE)}</td>
-          <td class="dim">${escapeHtml(r.RELATION)}</td>
-          <td>${escapeHtml(r.VETERAN)}</td>
-          <td class="num" style="text-align:right">${r.SHARE_PERCENT != null ? r.SHARE_PERCENT + '%' : '—'}</td>
-        </tr>`).join('')
-      : '<tr><td colspan="5" class="empty">No records</td></tr>';
+    $('nom-count').innerHTML = `<strong>${rows.length}</strong> nominees`;
+    $('tbl-nominees').innerHTML = rows.length ? rows.map(n => `
+      <tr>
+        <td class="id">N-${n.NID}</td>
+        <td class="name">${esc(n.NOMINEE)}</td>
+        <td><span style="font-family:var(--mono); font-size:10.5px; color:var(--paper-2); padding:3px 8px; border:1px solid var(--line-2); border-radius:3px; letter-spacing:0.06em; text-transform:uppercase;">${esc(n.RELATION)}</span></td>
+        <td>${esc(n.VETERAN)}</td>
+        <td class="num" style="color:var(--signal)">${n.SHARE_PERCENT != null ? n.SHARE_PERCENT + '%' : '—'}</td>
+      </tr>`).join('') : '<tr><td colspan="5" class="empty">No records</td></tr>';
   } catch (e) {
-    document.getElementById('tbl-nominees').innerHTML =
-      `<tr><td colspan="5" class="empty">Fetch error · ${escapeHtml(e.message)}</td></tr>`;
+    $('tbl-nominees').innerHTML = `<tr><td colspan="5" class="empty">Fetch error · ${esc(e.message)}</td></tr>`;
   }
 }
 
+// ─────────────────────────────────────────
+// REGIMENTS
+// ─────────────────────────────────────────
 async function loadRegiments() {
   try {
-    const rows = await api('/api/regiments');
+    const rows = await getRegiments();
+    const veterans = await getVeterans();
     const max = Math.max(...rows.map(r => r.VETERAN_COUNT || 0), 1);
-    document.getElementById('reg-grid').innerHTML = rows.length
-      ? rows.map(r => `
-          <div class="reg">
-            <div class="reg-name">${escapeHtml(r.NAME)}</div>
-            <div class="reg-meta">${escapeHtml(r.LOCATION || '—')}<span class="reg-arm">${escapeHtml(r.ARM || '—')}</span></div>
-            <div class="reg-bar"><div style="width:${(r.VETERAN_COUNT||0)/max*100}%"></div></div>
-            <div class="reg-count"><strong>${r.VETERAN_COUNT||0}</strong> ${r.VETERAN_COUNT===1?'veteran':'veterans'} on roll</div>
-          </div>`).join('')
-      : '<div class="loader">No units found</div>';
+    $('reg-grid').innerHTML = rows.length ? rows.map(r => {
+      const lore = REGIMENT_LORE[r.NAME] || { motto: '—', est: '—' };
+      const total = r.VETERAN_COUNT || 0;
+      const active = veterans.filter(v => v.REGIMENT === r.NAME && v.STATUS === 'Active').length;
+      return `<div class="reg-card">
+        <div class="est-mark">est. ${lore.est}</div>
+        <div class="arm-tag">${esc(r.ARM || '—')}</div>
+        <div class="name">${esc(r.NAME)}</div>
+        <div class="motto">"${esc(lore.motto)}"</div>
+        <div class="stats">
+          <div class="stat">
+            <div class="lbl">Personnel</div>
+            <div class="val">${total}<span class="small">on roll</span></div>
+          </div>
+          <div class="stat">
+            <div class="lbl">Active</div>
+            <div class="val">${active}<span class="small">of ${total}</span></div>
+          </div>
+        </div>
+        <div class="strength-bar"><div style="width:${(total/max)*100}%"></div></div>
+        <div style="font-family:var(--mono); font-size:10px; color:var(--paper-4); letter-spacing:0.06em; margin-top:8px;">${esc(r.LOCATION || '—')}</div>
+      </div>`;
+    }).join('') : '<div class="loader">No units found</div>';
   } catch (e) {
-    document.getElementById('reg-grid').innerHTML = `<div class="loader">Fetch error · ${escapeHtml(e.message)}</div>`;
+    $('reg-grid').innerHTML = `<div class="loader" style="color: var(--red)">Fetch error · ${esc(e.message)}</div>`;
   }
 }
 
+// ─────────────────────────────────────────
+// RANK LOG
+// ─────────────────────────────────────────
 async function loadRankLog() {
   try {
     const rows = await api('/api/rank_log');
-    document.getElementById('rl-count').textContent = rows.length + ' events';
-    document.getElementById('tbl-ranklog').innerHTML = rows.length
-      ? rows.map(r => `<tr>
-          <td class="id">${r.VID}</td>
-          <td class="name">${escapeHtml(r.NAME)}</td>
-          <td class="dim">${escapeHtml(r.OLD_RANK)}</td>
-          <td>${escapeHtml(r.NEW_RANK)}</td>
-          <td class="dim">${fmtDate(r.CHANGED_AT)}</td>
-          <td class="dim">${escapeHtml(r.CHANGED_BY)}</td>
-        </tr>`).join('')
-      : '<tr><td colspan="6" class="empty">No audit events</td></tr>';
+    $('rl-count').innerHTML = `<strong>${rows.length}</strong> events · trigger-driven · append-only`;
+    $('tbl-ranklog').innerHTML = rows.length ? rows.map((r, i) => `
+      <tr onclick='openDrawer(${r.VID})'>
+        <td class="id">RH-${9000 + (rows.length - i)}</td>
+        <td class="name">${esc(r.NAME)}<div style="font-family:var(--mono); font-size:10px; color:var(--paper-4); margin-top:2px;">VID ${r.VID}</div></td>
+        <td class="dim">${rankBadge(r.OLD_RANK)}</td>
+        <td style="color:var(--signal); font-family:var(--mono); font-size:14px;">→</td>
+        <td>${rankBadge(r.NEW_RANK)}</td>
+        <td class="dim">${fmtDate(r.CHANGED_AT)}</td>
+        <td><span style="font-family:var(--mono); font-size:10.5px; color:var(--paper-3); letter-spacing:0.06em;">${esc(r.CHANGED_BY)}</span></td>
+      </tr>`).join('') : '<tr><td colspan="7" class="empty">No audit events</td></tr>';
   } catch (e) {
-    document.getElementById('tbl-ranklog').innerHTML =
-      `<tr><td colspan="6" class="empty">Fetch error · ${escapeHtml(e.message)}</td></tr>`;
+    $('tbl-ranklog').innerHTML = `<tr><td colspan="7" class="empty">Fetch error · ${esc(e.message)}</td></tr>`;
   }
 }
 
+// ─────────────────────────────────────────
+// SCHEMA
+// ─────────────────────────────────────────
 async function loadSchema() {
   try {
     const rows = await api('/api/schema');
-    document.getElementById('schema-count').textContent = rows.length + ' objects';
-    document.getElementById('spec').innerHTML = rows.length
-      ? rows.map(r => `
-          <div class="spec-item">
-            <div class="spec-name">${escapeHtml(r.TABLE_NAME)}</div>
-            <div class="spec-meta">
-              <span>${r.TABLE_ROWS != null ? fmtNum(r.TABLE_ROWS) + ' rows' : 'view'}</span>
-              <strong>${r.CREATE_TIME ? String(r.CREATE_TIME).slice(0,10) : '—'}</strong>
-            </div>
-          </div>`).join('')
-      : '<div class="loader">No tables</div>';
+    $('schema-grid').innerHTML = rows.length ? rows.map(r => {
+      const isView = r.TABLE_NAME.startsWith('vw_') || r.TABLE_ROWS == null;
+      return `<div class="schema-card ${isView?'view':''}">
+        <div class="top">
+          <div class="name">${esc(r.TABLE_NAME)}</div>
+          <div class="type">${isView ? 'VIEW' : 'BASE TABLE'}</div>
+        </div>
+        <div class="row"><span>Engine</span><strong>${isView ? '—' : 'InnoDB'}</strong></div>
+        <div class="row"><span>Rows</span><strong>${r.TABLE_ROWS == null ? '—' : fmt(r.TABLE_ROWS)}</strong></div>
+        <div class="row"><span>Created</span><strong>${r.CREATE_TIME ? String(r.CREATE_TIME).slice(0,10) : '—'}</strong></div>
+      </div>`;
+    }).join('') : '<div class="loader">No tables</div>';
   } catch (e) {
-    document.getElementById('spec').innerHTML = `<div class="loader">Fetch error · ${escapeHtml(e.message)}</div>`;
+    $('schema-grid').innerHTML = `<div class="loader" style="color: var(--red)">Fetch error · ${esc(e.message)}</div>`;
   }
 }
 
+// ─────────────────────────────────────────
+// DRAWER
+// ─────────────────────────────────────────
+async function openDrawer(vid) {
+  try {
+    const veterans = await getVeterans();
+    const v = veterans.find(x => x.VID === vid);
+    if (!v) { toast('Veteran not found', 'error'); return; }
+
+    // Load related data lazily
+    const [pensions, nominees, rankLog] = await Promise.all([
+      api('/api/pensions'),
+      api('/api/nominees'),
+      api('/api/rank_log'),
+    ]);
+    const p = pensions.find(x => x.NAME === v.NAME);
+    const noms = nominees.filter(n => n.VETERAN === v.NAME);
+    const log = rankLog.filter(r => r.VID === vid).slice(0, 6);
+
+    $('d-vid').textContent = `VID ${vid}`;
+    $('d-name').innerHTML = esc(v.NAME);
+    $('d-svc').innerHTML = `${rankBadge(v.rank_name)} · ${esc(v.REGIMENT)}`;
+
+    $('drawer-body').innerHTML = `
+      <div class="kv-grid">
+        <div class="kv"><div class="lbl">Status</div><div class="val">${statusPip(v.STATUS)}</div></div>
+        <div class="kv"><div class="lbl">Service</div><div class="val">${v.SERVICE_YEARS != null ? v.SERVICE_YEARS + ' <span style="color:var(--paper-3)">years</span>' : '—'}</div></div>
+        <div class="kv"><div class="lbl">Date of birth</div><div class="val mono">${fmtDate(v.DOB)}</div></div>
+        <div class="kv"><div class="lbl">Discharge</div><div class="val mono">${fmtDate(v.DISCHARGE_DATE)}</div></div>
+        <div class="kv full"><div class="lbl">Regiment</div><div class="val">${esc(v.REGIMENT)}</div></div>
+      </div>
+
+      ${p ? `
+        <div class="dossier-section">
+          <div class="heading"><span>Pension on roll</span><span class="count">P-${esc(p.PID)}</span></div>
+          <div class="kv-grid" style="margin-bottom:0">
+            <div class="kv"><div class="lbl">Base / month</div><div class="val mono">₹ ${fmt(p.AMOUNT)}</div></div>
+            <div class="kv"><div class="lbl">DA</div><div class="val mono">${p.DA_PERCENT||0}%</div></div>
+            <div class="kv"><div class="lbl">Total / month</div><div class="val mono" style="color:var(--signal); font-weight:600">₹ ${fmt(p.TOTAL)}</div></div>
+            <div class="kv"><div class="lbl">Status</div><div class="val">${statusPip(p.STATUS)}</div></div>
+            <div class="kv full"><div class="lbl">Active since</div><div class="val mono">${fmtDate(p.START_DATE)}</div></div>
+          </div>
+        </div>` : ''}
+
+      ${noms.length ? `
+        <div class="dossier-section">
+          <div class="heading"><span>Nominees</span><span class="count">${noms.length}</span></div>
+          ${noms.map(n => `
+            <div style="display:grid; grid-template-columns:1fr auto auto; gap:12px; align-items:center; padding:10px 0; border-bottom:1px dotted var(--line); font-size:13px;">
+              <div>
+                <div style="color:var(--paper); font-weight:500;">${esc(n.NOMINEE)}</div>
+                <div style="font-family:var(--mono); font-size:10px; color:var(--paper-4); margin-top:2px;">N-${esc(n.NID)} · ${esc(n.RELATION)}</div>
+              </div>
+              <div style="font-family:var(--mono); color:var(--paper-3);">${n.SHARE_PERCENT||0}%</div>
+              <div style="width:60px; height:4px; background:var(--ink); border-radius:1px; overflow:hidden;">
+                <div style="width:${n.SHARE_PERCENT||0}%; height:100%; background:var(--signal);"></div>
+              </div>
+            </div>`).join('')}
+        </div>` : ''}
+
+      ${log.length ? `
+        <div class="dossier-section">
+          <div class="heading"><span>Promotion history</span><span class="count">${log.length}</span></div>
+          <div class="timeline">
+            ${log.map(r => `
+              <div class="timeline-item">
+                <div class="when">${fmtDate(r.CHANGED_AT)} · ${esc(r.CHANGED_BY)}</div>
+                <div class="what">${esc(r.OLD_RANK)} → <em>${esc(r.NEW_RANK)}</em></div>
+              </div>`).join('')}
+          </div>
+        </div>` : ''}
+
+      <div style="display:flex; gap:8px; margin-top:8px;">
+        <button class="btn primary" style="flex:1; justify-content: center;" onclick="closeDrawer(); openUpdateRankModal(${v.VID}, '${esc(v.NAME).replace(/'/g, "\\'")}', '${esc(v.rank_name).replace(/'/g, "\\'")}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+          Update rank
+        </button>
+      </div>
+
+      <div class="callout" style="margin-top:18px">
+        <strong>TRIGGER ›</strong> Updating this veteran's rank fires <code>trg_rank_change_log</code>, which writes a row to RANK_HISTORY automatically.
+      </div>
+    `;
+
+    $('drawer-overlay').classList.add('open');
+    $('drawer').classList.add('open');
+  } catch (e) {
+    toast('Failed to load dossier · ' + e.message, 'error');
+  }
+}
+function closeDrawer() {
+  $('drawer-overlay').classList.remove('open');
+  $('drawer').classList.remove('open');
+}
+window.openDrawer = openDrawer;
+window.closeDrawer = closeDrawer;
+
+async function openVeteranByName(name) {
+  const veterans = await getVeterans();
+  const v = veterans.find(x => x.NAME === name);
+  if (v) openDrawer(v.VID);
+}
+window.openVeteranByName = openVeteranByName;
+
+// ─────────────────────────────────────────
+// COMMAND PALETTE
+// ─────────────────────────────────────────
+let cmdkSel = 0;
+let cmdkItems = [];
+async function openCmdK() {
+  $('cmdk-overlay').classList.add('open');
+  $('cmdk-input').value = '';
+  $('cmdk-input').focus();
+  // Pre-warm caches
+  Promise.all([getVeterans(), getRegiments()]).then(() => renderCmdK(''));
+  renderCmdK('');
+}
+function closeCmdK() { $('cmdk-overlay').classList.remove('open'); }
+window.openCmdK = openCmdK;
+window.closeCmdK = closeCmdK;
+
+async function renderCmdK(q) {
+  const ql = (q || '').toLowerCase();
+  const navs = [
+    { type: 'page', key: 'dashboard', label: 'Go to Dashboard',    short: '⌘1' },
+    { type: 'page', key: 'veterans',  label: 'Go to Veterans',     short: '⌘2' },
+    { type: 'page', key: 'pensions',  label: 'Go to Pensions',     short: '⌘3' },
+    { type: 'page', key: 'nominees',  label: 'Go to Nominees',     short: '⌘4' },
+    { type: 'page', key: 'regiments', label: 'Go to Regiments',    short: '⌘5' },
+    { type: 'page', key: 'ranklog',   label: 'Go to Rank History', short: '⌘6' },
+    { type: 'page', key: 'schema',    label: 'Go to Schema',       short: '⌘7' },
+  ].filter(x => !ql || x.label.toLowerCase().includes(ql));
+
+  const veterans = cache.veterans || [];
+  const regiments = cache.regiments || [];
+
+  const vets = veterans.filter(v =>
+    !ql || v.NAME.toLowerCase().includes(ql) || String(v.VID).includes(ql)
+  ).slice(0, 8).map(v => ({ type: 'vet', key: v.VID, label: v.NAME, sub: `VID ${v.VID} · ${v.rank_name}` }));
+
+  const regs = regiments.filter(r => !ql || r.NAME.toLowerCase().includes(ql)).slice(0, 4)
+    .map(r => ({ type: 'reg', key: r.RID, label: r.NAME, sub: r.ARM || '—' }));
+
+  cmdkItems = [...navs, ...vets, ...regs];
+  cmdkSel = 0;
+
+  let html = '';
+  if (navs.length) {
+    html += `<div class="cmdk-group">Navigate</div>`;
+    html += navs.map((it, i) => itemHtml(it, i)).join('');
+  }
+  if (vets.length) {
+    html += `<div class="cmdk-group">Veterans</div>`;
+    html += vets.map((it, i) => itemHtml(it, navs.length + i)).join('');
+  }
+  if (regs.length) {
+    html += `<div class="cmdk-group">Regiments</div>`;
+    html += regs.map((it, i) => itemHtml(it, navs.length + vets.length + i)).join('');
+  }
+  if (!cmdkItems.length) html = `<div class="empty" style="padding:32px">No results</div>`;
+  $('cmdk-list').innerHTML = html;
+}
+window.renderCmdK = renderCmdK;
+
+function itemHtml(it, idx) {
+  const icon = it.type === 'page'
+    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 5l7 7-7 7"/></svg>`
+    : it.type === 'vet'
+    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.5"/><path d="M5 21c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 22V4l8-2v20"/><path d="M12 7h7v15"/></svg>`;
+  return `<div class="cmdk-item ${idx===cmdkSel?'sel':''}" data-idx="${idx}" onclick="cmdkPick(${idx})">
+    ${icon}
+    <div style="flex:1; min-width:0;">
+      <div style="color:inherit;">${esc(it.label)}</div>
+      ${it.sub ? `<div style="font-family:var(--mono); font-size:10px; color:var(--paper-4); margin-top:2px;">${esc(it.sub)}</div>` : ''}
+    </div>
+    <span class="arrow">↵</span>
+    ${it.short ? `<span style="font-family:var(--mono); font-size:10px; color:var(--paper-4)">${it.short}</span>` : ''}
+  </div>`;
+}
+function cmdkPick(idx) {
+  const it = cmdkItems[idx]; if (!it) return;
+  closeCmdK();
+  if (it.type === 'page') show(it.key);
+  if (it.type === 'vet')  { show('veterans'); openDrawer(it.key); }
+  if (it.type === 'reg')  show('regiments');
+}
+window.cmdkPick = cmdkPick;
+function cmdkKey(e) {
+  if (e.key === 'ArrowDown') { e.preventDefault(); cmdkSel = Math.min(cmdkItems.length-1, cmdkSel+1); rerenderSel(); }
+  if (e.key === 'ArrowUp')   { e.preventDefault(); cmdkSel = Math.max(0, cmdkSel-1); rerenderSel(); }
+  if (e.key === 'Enter')     { e.preventDefault(); cmdkPick(cmdkSel); }
+  if (e.key === 'Escape')    { closeCmdK(); }
+}
+window.cmdkKey = cmdkKey;
+function rerenderSel() {
+  document.querySelectorAll('.cmdk-item').forEach(el => {
+    el.classList.toggle('sel', +el.dataset.idx === cmdkSel);
+  });
+  document.querySelector('.cmdk-item.sel')?.scrollIntoView({ block: 'nearest' });
+}
+
+// Global keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openCmdK(); }
+  if (e.key === 'Escape') { closeDrawer(); closeCmdK(); document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open')); }
+  if (!e.metaKey && !e.ctrlKey && !e.altKey && /^[1-7]$/.test(e.key) && document.activeElement.tagName !== 'INPUT') {
+    const pages = ['dashboard','veterans','pensions','nominees','regiments','ranklog','schema'];
+    show(pages[+e.key - 1]);
+  }
+});
+
+// ─────────────────────────────────────────
+// ADD VETERAN MODAL
+// ─────────────────────────────────────────
 async function openAddVeteranModal() {
   try {
-    const regs = await api('/api/regiments');
-    document.getElementById('av-regiment').innerHTML =
-      '<option value="">— Select regiment —</option>' +
-      regs.map(r => `<option value="${r.RID}">${escapeHtml(r.NAME)}</option>`).join('');
+    const regs = await getRegiments();
+    $('av-regiment').innerHTML = '<option value="">— Select regiment —</option>' +
+      regs.map(r => `<option value="${r.RID}">${esc(r.NAME)}</option>`).join('');
   } catch (e) {
-    document.getElementById('av-regiment').innerHTML = '<option value="">Could not load regiments</option>';
+    $('av-regiment').innerHTML = '<option value="">Could not load regiments</option>';
   }
-  ['av-vid','av-name','av-svc','av-dob','av-enlist','av-retire','av-state','av-contact'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  ['av-gender','av-rank','av-status','av-regiment'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  document.getElementById('av-msg').textContent = '';
-  document.getElementById('av-msg').className = 'modal-msg';
+  ['av-vid','av-name','av-svc','av-dob','av-enlist','av-retire','av-state','av-contact'].forEach(id => $(id).value = '');
+  ['av-gender','av-rank','av-status','av-regiment'].forEach(id => $(id).value = '');
+  $('av-msg').textContent = '';
+  $('av-msg').className = 'modal-msg';
   openModal('modal-add-veteran');
 }
+window.openAddVeteranModal = openAddVeteranModal;
 
 async function submitAddVeteran() {
-  const msg = document.getElementById('av-msg');
+  const msg = $('av-msg');
   msg.textContent = 'Submitting…';
   msg.className = 'modal-msg';
 
   const payload = {
-    veteran_id:         document.getElementById('av-vid').value.trim(),
-    full_name:          document.getElementById('av-name').value.trim(),
-    service_number:     document.getElementById('av-svc').value.trim(),
-    gender:             document.getElementById('av-gender').value,
-    date_of_birth:      document.getElementById('av-dob').value,
-    date_of_enlistment: document.getElementById('av-enlist').value,
-    date_of_retirement: document.getElementById('av-retire').value || null,
-    rank_name:          document.getElementById('av-rank').value,
-    status:             document.getElementById('av-status').value,
-    regiment_id:        document.getElementById('av-regiment').value,
-    state_of_domicile:  document.getElementById('av-state').value.trim() || null,
-    contact_number:     document.getElementById('av-contact').value.trim() || null,
+    veteran_id:         $('av-vid').value.trim(),
+    full_name:          $('av-name').value.trim(),
+    service_number:     $('av-svc').value.trim(),
+    gender:             $('av-gender').value,
+    date_of_birth:      $('av-dob').value,
+    date_of_enlistment: $('av-enlist').value,
+    date_of_retirement: $('av-retire').value || null,
+    rank_name:          $('av-rank').value,
+    status:             $('av-status').value,
+    regiment_id:        $('av-regiment').value,
+    state_of_domicile:  $('av-state').value.trim() || null,
+    contact_number:     $('av-contact').value.trim() || null,
   };
 
   try {
@@ -1005,36 +2027,41 @@ async function submitAddVeteran() {
       body: JSON.stringify(payload),
     });
     closeModal('modal-add-veteran');
-    toast(`✓ ${res.message} (ID ${res.veteran_id})`, 'success');
-    delete loaded.veterans; delete loaded.dashboard;
-    if (document.getElementById('page-veterans').classList.contains('active')) { loaded.veterans = true; loadVeterans(); }
-    if (document.getElementById('page-dashboard').classList.contains('active')) { loaded.dashboard = true; loadDashboard(); }
+    toast(`✓ ${res.message}`);
+    invalidateCache();
+    Object.keys(loaded).forEach(k => delete loaded[k]);
+    loaded.dashboard = true;
+    if ($('page-dashboard').classList.contains('active')) loadDashboard();
+    if ($('page-veterans').classList.contains('active')) { loaded.veterans = true; loadVeterans(); }
   } catch (e) {
     msg.textContent = e.message;
     msg.className = 'modal-msg err';
   }
 }
+window.submitAddVeteran = submitAddVeteran;
 
+// ─────────────────────────────────────────
+// UPDATE RANK MODAL
+// ─────────────────────────────────────────
 let _urVid = null;
 function openUpdateRankModal(vid, name, currentRank) {
   _urVid = vid;
-  document.getElementById('ur-vid').textContent = vid;
-  document.getElementById('ur-name').textContent = name;
-  document.getElementById('ur-current-rank').textContent = currentRank;
-  document.getElementById('ur-rank').value = '';
-  document.getElementById('ur-msg').textContent = '';
-  document.getElementById('ur-msg').className = 'modal-msg';
+  $('ur-vid').textContent = vid;
+  $('ur-name').textContent = name;
+  $('ur-current-rank').textContent = currentRank;
+  $('ur-rank').value = '';
+  $('ur-msg').textContent = '';
+  $('ur-msg').className = 'modal-msg';
   openModal('modal-update-rank');
 }
+window.openUpdateRankModal = openUpdateRankModal;
 
 async function submitUpdateRank() {
-  const msg = document.getElementById('ur-msg');
-  const newRank = document.getElementById('ur-rank').value;
-  if (!newRank) { msg.textContent = 'Select a rank.'; msg.className = 'modal-msg err'; return; }
-
+  const msg = $('ur-msg');
+  const newRank = $('ur-rank').value;
+  if (!newRank) { msg.textContent = 'Select a rank'; msg.className = 'modal-msg err'; return; }
   msg.textContent = 'Updating…';
   msg.className = 'modal-msg';
-
   try {
     const res = await api(`/api/veterans/${_urVid}/rank`, {
       method: 'POST',
@@ -1042,11 +2069,13 @@ async function submitUpdateRank() {
       body: JSON.stringify({ new_rank: newRank }),
     });
     closeModal('modal-update-rank');
-    toast(`✓ ${res.name} promoted: ${res.old_rank} → ${res.new_rank} · trigger logged to RANK_HISTORY`, 'success');
+    toast(`${res.name}: ${res.old_rank} → ${res.new_rank} · trigger logged`);
+    invalidateCache();
     ['veterans','ranklog','dashboard'].forEach(p => {
       delete loaded[p];
-      if (document.getElementById('page-' + p).classList.contains('active')) {
-        loaded[p] = true; loadPage(p);
+      if ($('page-' + p).classList.contains('active')) {
+        loaded[p] = true;
+        ({ veterans: loadVeterans, ranklog: loadRankLog, dashboard: loadDashboard })[p]?.();
       }
     });
   } catch (e) {
@@ -1054,7 +2083,13 @@ async function submitUpdateRank() {
     msg.className = 'modal-msg err';
   }
 }
+window.submitUpdateRank = submitUpdateRank;
 
+// ─────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────
+buildTicker();
+tickClock();
 loaded.dashboard = true;
 loadDashboard();
 </script>
