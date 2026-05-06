@@ -3,6 +3,8 @@
 > Academic database project · MySQL 8.0+ · Python 3.10+ · Flask
 > Demonstrates: Schema Design · PL/SQL · Algorithm Analysis · Normalization · Web UI
 
+**Live deployment:** https://dbms-databaseveteranrecords-production.up.railway.app
+
 ---
 
 ## What This Project Is
