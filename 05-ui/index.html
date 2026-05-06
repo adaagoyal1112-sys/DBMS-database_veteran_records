@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IVRPMS — Indian Veteran Resource & Pension Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#f4f6f8;--bg2:#ffffff;--bg3:#f8fafc;--bg4:#eef1f5;
+  --border:#d5dbe3;--border2:#c1c9d4;--border3:#a8b3c2;
+  --accent:#e8790b;--accent2:#f59e42;--accent3:#d97706;
+  --blue:#0073bb;--blue2:#44b9f6;--green:#1e8900;--red:#d13212;
+  --text:#16191f;--text2:#5f6b7a;--text3:#87929d;
+  --mono:'Share Tech Mono',monospace;--head:'Orbitron',sans-serif;--body:'Rajdhani',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:14px;min-height:100vh;overflow-x:hidden;line-height:1.5}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.02) 2px,rgba(0,0,0,0.02) 4px);pointer-events:none;z-index:9999}
+
+/* ── Header ─────────────────────────────────────────── */
+header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+.logo-block{display:flex;align-items:center;gap:12px}
+.emblem{width:32px;height:32px;border:2px solid var(--accent);border-radius:6px;display:grid;place-items:center;font-size:16px;color:var(--accent);background:linear-gradient(135deg,rgba(232,121,11,0.08) 0%,transparent 70%);animation:pulse-ring 3s ease-in-out infinite}
+@keyframes pulse-ring{0%,100%{box-shadow:0 0 0 0 rgba(232,121,11,0.15)}50%{box-shadow:0 0 0 4px rgba(232,121,11,0)}}
+.logo-text{font-family:var(--head);font-size:14px;font-weight:700;letter-spacing:1.5px;color:var(--text);line-height:1.2}
+.logo-sub{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px}
+.header-right{display:flex;align-items:center;gap:20px}
+.clock{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:1.5px;background:var(--bg3);padding:4px 10px;border-radius:4px;border:1px solid var(--border)}
+.status-dot{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:1px;background:var(--bg3);padding:4px 10px;border-radius:4px;border:1px solid var(--border)}
+.status-dot::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* ── Layout ─────────────────────────────────────────── */
+.layout{display:flex;min-height:calc(100vh - 56px)}
+nav{width:240px;background:var(--bg2);border-right:1px solid var(--border);padding:16px 0;flex-shrink:0;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+.nav-section{padding:8px 16px 4px;font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-top:12px;font-weight:600}
+nav a{display:flex;align-items:center;gap:10px;padding:8px 16px;margin:2px 12px;color:var(--text2);text-decoration:none;font-family:var(--body);font-weight:600;font-size:13px;letter-spacing:0.3px;cursor:pointer;transition:all 0.15s;border-radius:6px;border-left:none}
+nav a:hover{color:var(--text);background:var(--bg4)}
+nav a.active{color:var(--accent);background:rgba(232,121,11,0.06);box-shadow:inset 2px 0 0 var(--accent)}
+nav a .icon{font-size:14px;width:18px;text-align:center;opacity:0.8}
+nav a.active .icon{opacity:1;color:var(--accent)}
+
+main{flex:1;padding:24px;overflow-x:hidden;background:var(--bg)}
+.page{display:none;animation:fadein 0.25s ease}.page.active{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Page Header ────────────────────────────────────── */
+.page-head{margin-bottom:24px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.page-head h1{font-family:var(--head);font-size:18px;font-weight:700;letter-spacing:2px;color:var(--text);text-transform:uppercase}
+.page-head p{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1px;margin-top:2px}
+.page-head-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.page-head .search-box{background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:8px 14px;font-family:var(--mono);font-size:12px;width:220px;outline:none;transition:all 0.2s;letter-spacing:1px;border-radius:6px;box-shadow:inset 0 1px 2px rgba(0,0,0,0.04)}
+.page-head .search-box:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(232,121,11,0.1),inset 0 1px 2px rgba(0,0,0,0.04)}
+.page-head .search-box::placeholder{color:var(--text3)}
+
+/* ── Buttons ─────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:none;border-radius:6px;font-family:var(--mono);font-size:11px;letter-spacing:1px;cursor:pointer;transition:all 0.15s;font-weight:600;text-transform:uppercase}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent3);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,121,11,0.3)}
+.btn-secondary{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sm{padding:5px 10px;font-size:10px}
+.btn-rank{background:rgba(0,115,187,0.08);color:var(--blue);border:1px solid rgba(0,115,187,0.3)}
+.btn-rank:hover{background:var(--blue);color:#fff;transform:translateY(-1px)}
+.btn-danger{background:rgba(209,50,18,0.08);color:var(--red);border:1px solid rgba(209,50,18,0.3)}
+
+/* ── Stats ─────────────────────────────────────────── */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+.stat-card{background:var(--bg2);border:1px solid var(--border);padding:20px;position:relative;overflow:hidden;transition:all 0.2s;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,0.06)}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:8px 8px 0 0}
+.stat-card:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.stat-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:8px;font-weight:600}
+.stat-value{font-family:var(--head);font-size:26px;font-weight:900;color:var(--text);line-height:1.2}
+.stat-value.rupee{font-size:20px;color:var(--accent)}
+.stat-icon{position:absolute;right:16px;top:20px;font-size:24px;opacity:0.12;color:var(--accent)}
+.stat-sub{font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:8px;letter-spacing:1px}
+
+/* ── Panels ─────────────────────────────────────────── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.panel{background:var(--bg2);border:1px solid var(--border);overflow:hidden;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,0.06);margin-bottom:16px}
+.panel-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg3)}
+.panel-title{font-family:var(--head);font-size:11px;letter-spacing:2px;color:var(--text);text-transform:uppercase;font-weight:700}
+.panel-count{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1px;background:var(--bg4);padding:2px 8px;border-radius:4px;border:1px solid var(--border)}
+
+/* ── Tables ─────────────────────────────────────────── */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px}
+thead th{background:var(--bg3);padding:10px 14px;text-align:left;font-size:9px;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;white-space:nowrap;border-bottom:1px solid var(--border2);font-weight:600}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.12s}
+tbody tr:hover{background:var(--bg3)}
+tbody td{padding:10px 14px;color:var(--text);white-space:nowrap}
+tbody td.name{color:var(--text);font-family:var(--body);font-weight:600;font-size:13px}
+tbody td.rank{color:var(--accent);font-weight:600}
+tbody td.active{color:var(--green);font-weight:600}
+tbody td.inactive{color:var(--red);font-weight:600}
+tbody td.amount{color:var(--accent);font-weight:600}
+tbody td.share{color:var(--text2)}
+.empty-row td{text-align:center;color:var(--text3);padding:28px;letter-spacing:2px;font-size:10px}
+
+/* ── Regiments Grid ─────────────────────────────────── */
+.rgt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;padding:16px}
+.rgt-card{background:var(--bg3);border:1px solid var(--border);padding:16px;transition:all 0.2s;border-radius:8px}
+.rgt-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+.rgt-name{font-family:var(--head);font-size:12px;letter-spacing:2px;color:var(--text);margin-bottom:4px;font-weight:700}
+.rgt-meta{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:14px;letter-spacing:1px}
+.rgt-bar-bg{background:var(--bg);border:1px solid var(--border);height:6px;width:100%;border-radius:3px;overflow:hidden}
+.rgt-bar{height:100%;background:linear-gradient(90deg,var(--accent3),var(--accent));transition:width 0.8s ease;border-radius:3px}
+.rgt-count{font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:8px;letter-spacing:1px}
+
+/* ── Schema Tags ────────────────────────────────────── */
+.schema-features{display:flex;flex-wrap:wrap;gap:8px;padding:16px;border-top:1px solid var(--border);background:var(--bg3)}
+.tag{background:var(--bg4);border:1px solid var(--border2);padding:4px 10px;font-family:var(--mono);font-size:9px;color:var(--text2);letter-spacing:1.5px;border-radius:4px;transition:all 0.15s}
+.tag:hover{border-color:var(--accent);color:var(--accent)}
+.tag.algo{border-color:var(--blue);color:var(--blue);background:rgba(0,115,187,0.06)}
+.tag.norm{border-color:var(--green);color:var(--green);background:rgba(30,137,0,0.06)}
+
+/* ── Loader ─────────────────────────────────────────── */
+.loader{text-align:center;padding:40px;font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:3px;animation:blink 1s infinite}
+
+/* ════════════════════════════════════════════════════
+   MODAL OVERLAY
+════════════════════════════════════════════════════ */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(22,25,31,0.65);
+  backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;
+  animation:fadeOverlay 0.2s ease
+}
+.modal-overlay.open{display:flex}
+@keyframes fadeOverlay{from{opacity:0}to{opacity:1}}
+
+.modal{
+  background:var(--bg2);border:1px solid var(--border2);border-radius:10px;
+  width:580px;max-width:95vw;max-height:90vh;overflow-y:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,0.25);
+  animation:slideModal 0.25s cubic-bezier(0.34,1.56,0.64,1)
+}
+@keyframes slideModal{from{transform:translateY(20px) scale(0.97);opacity:0}to{transform:none;opacity:1}}
+
+.modal-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,var(--bg3) 0%,var(--bg2) 100%);
+  position:sticky;top:0
+}
+.modal-title{font-family:var(--head);font-size:12px;letter-spacing:2px;color:var(--text);font-weight:700;text-transform:uppercase}
+.modal-close{
+  background:none;border:1px solid var(--border);border-radius:4px;color:var(--text3);
+  font-size:16px;width:28px;height:28px;cursor:pointer;display:grid;place-items:center;
+  transition:all 0.15s;font-family:var(--mono)
+}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+
+.modal-body{padding:20px}
+
+/* ── Form Fields ─────────────────────────────────────── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grid.single{grid-template-columns:1fr}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+.field label{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;font-weight:600}
+.field input,.field select{
+  background:var(--bg3);border:1px solid var(--border);color:var(--text);
+  padding:9px 12px;font-family:var(--mono);font-size:12px;outline:none;
+  transition:all 0.2s;letter-spacing:0.5px;border-radius:6px;width:100%
+}
+.field input:focus,.field select:focus{
+  border-color:var(--accent);background:var(--bg2);
+  box-shadow:0 0 0 2px rgba(232,121,11,0.1)
+}
+.field input::placeholder{color:var(--text3)}
+.field select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%2387929d' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:30px}
+.field .hint{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px}
+
+.modal-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;border-top:1px solid var(--border);background:var(--bg3);
+  gap:10px;flex-wrap:wrap
+}
+
+/* ── Toast Notification ─────────────────────────────── */
+#toast{
+  position:fixed;bottom:24px;right:24px;z-index:2000;
+  font-family:var(--mono);font-size:11px;letter-spacing:1px;
+  padding:12px 18px;border-radius:8px;border:1px solid transparent;
+  max-width:380px;line-height:1.5;
+  transform:translateY(60px);opacity:0;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events:none
+}
+#toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
+#toast.success{background:#f0fdf0;border-color:#86efac;color:#166534}
+#toast.error{background:#fef2f2;border-color:#fca5a5;color:#991b1b}
+#toast.info{background:#eff6ff;border-color:#93c5fd;color:#1e3a8a}
+
+/* ── Rank Update select within table ───────────────── */
+.rank-select-row{display:flex;align-items:center;gap:6px}
+.rank-select-row select{
+  background:var(--bg3);border:1px solid var(--border);color:var(--text);
+  padding:4px 8px;font-family:var(--mono);font-size:10px;
+  border-radius:4px;outline:none;cursor:pointer;max-width:140px
+}
+.rank-select-row select:focus{border-color:var(--blue)}
+
+/* ── Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--border3)}
+
+/* ── Responsive ─────────────────────────────────────── */
+@media(max-width:900px){
+  .two-col{grid-template-columns:1fr}
+  nav{width:200px}
+  .stat-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+  .form-grid{grid-template-columns:1fr}
+  .form-grid .full{grid-column:1}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     MODAL 1: ADD VETERAN
+══════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-add-veteran">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">&#10022; Enlist New Veteran</span>
+      <button class="modal-close" onclick="closeModal('modal-add-veteran')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>Veteran ID *</label>
+          <input id="av-vid" type="number" placeholder="e.g. 1051" min="1"/>
+          <span class="hint">Must be unique — existing IDs: 1001–1050</span>
+        </div>
+        <div class="field">
+          <label>Full Name *</label>
+          <input id="av-name" type="text" placeholder="e.g. Rajinder Singh"/>
+        </div>
+        <div class="field">
+          <label>Service Number *</label>
+          <input id="av-svc" type="text" placeholder="e.g. IC-40051"/>
+          <span class="hint">Format: IC-, JC-, or GC- + 5–6 digits</span>
+        </div>
+        <div class="field">
+          <label>Gender *</label>
+          <select id="av-gender">
+            <option value="">— Select —</option>
+            <option value="M">Male (M)</option>
+            <option value="F">Female (F)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Date of Birth *</label>
+          <input id="av-dob" type="date"/>
+        </div>
+        <div class="field">
+          <label>Date of Enlistment *</label>
+          <input id="av-enlist" type="date"/>
+        </div>
+        <div class="field">
+          <label>Date of Retirement</label>
+          <input id="av-retire" type="date"/>
+          <span class="hint">Leave blank if still serving</span>
+        </div>
+        <div class="field">
+          <label>Rank *</label>
+          <select id="av-rank">
+            <option value="">— Select Rank —</option>
+            <option>Sepoy</option><option>Naik</option><option>Havildar</option>
+            <option>Naib Subedar</option><option>Subedar</option><option>Subedar Major</option>
+            <option>Lieutenant</option><option>Captain</option><option>Major</option>
+            <option>Lt. Colonel</option><option>Colonel</option><option>Brigadier</option>
+            <option>Major General</option><option>Lt. General</option><option>General</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Status *</label>
+          <select id="av-status">
+            <option value="">— Select Status —</option>
+            <option>Active</option><option>Retired</option>
+            <option>Deceased</option><option>Missing</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Regiment *</label>
+          <select id="av-regiment">
+            <option value="">— Loading Regiments… —</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>State of Domicile</label>
+          <input id="av-state" type="text" placeholder="e.g. Punjab"/>
+        </div>
+        <div class="field full">
+          <label>Contact Number</label>
+          <input id="av-contact" type="text" placeholder="10-digit mobile (optional)"/>
+          <span class="hint">Must start with 6–9</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span id="av-status-msg" style="font-family:var(--mono);font-size:10px;color:var(--text3)"></span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary" onclick="closeModal('modal-add-veteran')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitAddVeteran()">&#10022; Enlist Veteran</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     MODAL 2: UPDATE RANK
+══════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-update-rank">
+  <div class="modal" style="width:420px">
+    <div class="modal-head">
+      <span class="modal-title">&#8593; Update Rank</span>
+      <button class="modal-close" onclick="closeModal('modal-update-rank')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div id="ur-info" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:16px;font-family:var(--mono);font-size:11px;letter-spacing:1px">
+        <div style="color:var(--text3);margin-bottom:6px">SELECTED VETERAN</div>
+        <div id="ur-name" style="color:var(--text);font-size:13px;font-family:var(--body);font-weight:700;margin-bottom:4px">—</div>
+        <div style="display:flex;gap:16px;margin-top:8px">
+          <span>ID: <span id="ur-vid" style="color:var(--accent)">—</span></span>
+          <span>Current Rank: <span id="ur-current-rank" style="color:var(--accent);font-weight:700">—</span></span>
+        </div>
+      </div>
+      <div class="field">
+        <label>New Rank *</label>
+        <select id="ur-rank">
+          <option value="">— Select New Rank —</option>
+          <option>Sepoy</option><option>Naik</option><option>Havildar</option>
+          <option>Naib Subedar</option><option>Subedar</option><option>Subedar Major</option>
+          <option>Lieutenant</option><option>Captain</option><option>Major</option>
+          <option>Lt. Colonel</option><option>Colonel</option><option>Brigadier</option>
+          <option>Major General</option><option>Lt. General</option><option>General</option>
+        </select>
+      </div>
+      <div style="margin-top:12px;padding:10px;background:rgba(232,121,11,0.06);border:1px solid rgba(232,121,11,0.2);border-radius:6px;font-family:var(--mono);font-size:9px;color:var(--text2);letter-spacing:1px;line-height:1.6">
+        &#9888; The <strong>trg_rank_change_log</strong> trigger will automatically fire on UPDATE,
+        writing the old rank, new rank, date and user to <strong>RANK_HISTORY</strong>.
+        No manual insert is needed.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span id="ur-status-msg" style="font-family:var(--mono);font-size:10px;color:var(--text3)"></span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary" onclick="closeModal('modal-update-rank')">Cancel</button>
+        <button class="btn btn-primary" style="background:var(--blue)" onclick="submitUpdateRank()">&#8593; Update Rank</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     TOAST
+══════════════════════════════════════════════════ -->
+<div id="toast"></div>
+
+<!-- ══════════════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════════════ -->
+<header>
+  <div class="logo-block">
+    <div class="emblem">&#9876;</div>
+    <div>
+      <div class="logo-text">IVRPMS</div>
+      <div class="logo-sub">INDIAN VETERAN RESOURCE &amp; PENSION MANAGEMENT SYSTEM</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="status-dot">SYSTEM ONLINE</div>
+    <div class="clock" id="clock">--:--:--</div>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- ── Sidebar ── -->
+  <nav>
+    <div class="nav-section">COMMAND</div>
+    <a class="active" onclick="show('dashboard')" data-page="dashboard"><span class="icon">&#9672;</span> Dashboard</a>
+    <div class="nav-section">RECORDS</div>
+    <a onclick="show('veterans')" data-page="veterans"><span class="icon">&#10022;</span> Veterans</a>
+    <a onclick="show('pensions')" data-page="pensions"><span class="icon">&#8377;</span> Pensions</a>
+    <a onclick="show('nominees')" data-page="nominees"><span class="icon">&#9673;</span> Nominees</a>
+    <div class="nav-section">MILITARY</div>
+    <a onclick="show('regiments')" data-page="regiments"><span class="icon">&#9873;</span> Regiments</a>
+    <a onclick="show('ranklog')" data-page="ranklog"><span class="icon">&#8593;</span> Rank Log</a>
+    <div class="nav-section">SYSTEM</div>
+    <a onclick="show('schema')" data-page="schema"><span class="icon">&#8862;</span> Schema</a>
+  </nav>
+
+  <main>
+    <!-- ══ DASHBOARD ══ -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-head">
+        <div><h1>Command Dashboard</h1><p>LIVE OPERATIONAL OVERVIEW · IVRPMS v2.0</p></div>
+      </div>
+      <div class="stat-grid" id="stat-grid"><div class="loader">LOADING TELEMETRY...</div></div>
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">Recent Veterans</span><span class="panel-count" id="rv-count">—</span></div>
+          <div class="tbl-wrap"><table><thead><tr><th>Name</th><th>Rank</th><th>Regiment</th><th>Retirement</th></tr></thead><tbody id="tbl-recent"></tbody></table></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">Top Pensions</span><span class="panel-count" id="tp-count">—</span></div>
+          <div class="tbl-wrap"><table><thead><tr><th>Name</th><th>Rank</th><th>Base (₹)</th><th>DA%</th><th>Total (₹)</th><th>Status</th></tr></thead><tbody id="tbl-top-pensions"></tbody></table></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ VETERANS ══ -->
+    <div class="page" id="page-veterans">
+      <div class="page-head">
+        <div><h1>Veterans Registry</h1><p>PERSONNEL DATABASE · FULL REGISTER</p></div>
+        <div class="page-head-right">
+          <input class="search-box" placeholder="SEARCH VETERANS..." oninput="filterTable('tbl-veterans',this.value)"/>
+          <button class="btn btn-primary" onclick="openAddVeteranModal()">&#10022; Enlist New</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">All Veterans</span>
+          <span class="panel-count" id="vet-count">—</span>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th><th>Name</th><th>Rank</th><th>DOB</th>
+                <th>Retirement</th><th>Yrs Service</th><th>Regiment</th><th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tbl-veterans"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PENSIONS ══ -->
+    <div class="page" id="page-pensions">
+      <div class="page-head">
+        <div><h1>Pension Register</h1><p>DISBURSEMENT LEDGER · DA-ADJUSTED TOTALS</p></div>
+        <input class="search-box" placeholder="SEARCH PENSIONS..." oninput="filterTable('tbl-pensions',this.value)"/>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">All Pension Records</span><span class="panel-count" id="pen-count">—</span></div>
+        <div class="tbl-wrap"><table><thead><tr><th>PID</th><th>Veteran</th><th>Rank</th><th>Base (₹)</th><th>DA%</th><th>Total (₹)</th><th>Status</th><th>Since</th></tr></thead><tbody id="tbl-pensions"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ══ NOMINEES ══ -->
+    <div class="page" id="page-nominees">
+      <div class="page-head">
+        <div><h1>Family Beneficiaries</h1><p>NOMINEE REGISTER · SHARE ALLOCATION</p></div>
+        <input class="search-box" placeholder="SEARCH NOMINEES..." oninput="filterTable('tbl-nominees',this.value)"/>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">All Nominees</span><span class="panel-count" id="nom-count">—</span></div>
+        <div class="tbl-wrap"><table><thead><tr><th>NID</th><th>Nominee</th><th>Relation</th><th>Veteran</th><th>Share %</th></tr></thead><tbody id="tbl-nominees"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ══ REGIMENTS ══ -->
+    <div class="page" id="page-regiments">
+      <div class="page-head"><div><h1>Regiment Directory</h1><p>MILITARY UNITS · STRENGTH OVERVIEW</p></div></div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Active Regiments</span><span class="panel-count" id="rgt-count">—</span></div>
+        <div class="rgt-grid" id="rgt-grid"><div class="loader">LOADING UNITS...</div></div>
+      </div>
+    </div>
+
+    <!-- ══ RANK LOG ══ -->
+    <div class="page" id="page-ranklog">
+      <div class="page-head">
+        <div><h1>Rank Promotion Log</h1><p>TRIGGER AUDIT TRAIL · RANK_HISTORY TABLE</p></div>
+        <input class="search-box" placeholder="SEARCH LOG..." oninput="filterTable('tbl-ranklog',this.value)"/>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Audit Events</span><span class="panel-count" id="rl-count">—</span></div>
+        <div class="tbl-wrap"><table><thead><tr><th>VID</th><th>Name</th><th>Old Rank</th><th>New Rank</th><th>Changed On</th><th>Recorded By</th></tr></thead><tbody id="tbl-ranklog"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ══ SCHEMA ══ -->
+    <div class="page" id="page-schema">
+      <div class="page-head"><div><h1>Database Schema</h1><p>IVRPMS RELATIONAL MODEL · MYSQL 8.0+</p></div></div>
+      <div class="panel" style="margin-bottom:20px">
+        <div class="panel-header"><span class="panel-title">Tables Overview</span><span class="panel-count" id="schema-count">—</span></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Table Name</th><th>Approx. Rows</th><th>Created</th></tr></thead><tbody id="tbl-schema"></tbody></table></div>
+        <div class="schema-features">
+          <span class="tag norm">3NF NORMALIZED</span><span class="tag norm">BCNF COMPLIANT</span>
+          <span class="tag algo">MERGE SORT</span><span class="tag algo">KMP SEARCH</span>
+          <span class="tag">PL/SQL TRIGGERS</span><span class="tag">STORED PROCEDURES</span>
+          <span class="tag">FOREIGN KEY CONSTRAINTS</span><span class="tag norm">ER MODEL</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════ -->
+<script>
+// ── Clock ────────────────────────────────────────────────────
+function tick(){const d=new Date(),p=n=>String(n).padStart(2,'0');document.getElementById('clock').textContent=p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds())+' IST';}
+setInterval(tick,1000);tick();
+
+// ── Navigation ────────────────────────────────────────────────
+const loaded={};
+function show(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelector('nav a[data-page="'+page+'"]').classList.add('active');
+  if(!loaded[page]){loaded[page]=true;loadPage(page);}
+}
+
+// ── Toast ─────────────────────────────────────────────────────
+let toastTimer;
+function toast(msg, type='info'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='show '+type;
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.className='',4000);
+}
+
+// ── Modal helpers ─────────────────────────────────────────────
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(el=>{
+  el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');});
+});
+
+// ── Fetch helper ──────────────────────────────────────────────
+async function apiFetch(path,opts){
+  const r=await fetch(path,opts);
+  if(!r.ok){const e=await r.json().catch(()=>({error:'HTTP '+r.status}));throw new Error(e.error||'HTTP '+r.status);}
+  return r.json();
+}
+const fmtN=n=>(n==null||n==='')?'—':Number(n).toLocaleString('en-IN');
+const fmtD=s=>s?String(s).slice(0,10):'—';
+const statusClass=s=>s==='Active'?'active':'inactive';
+
+const RANKS=[
+  'Sepoy','Naik','Havildar',
+  'Naib Subedar','Subedar','Subedar Major',
+  'Lieutenant','Captain','Major',
+  'Lt. Colonel','Colonel','Brigadier',
+  'Major General','Lt. General','General'
+];
+
+function rankOptions(current=''){
+  return RANKS.map(r=>`<option value="${r}"${r===current?' selected':''}>${r}</option>`).join('');
+}
+
+// ── Load page router ──────────────────────────────────────────
+function loadPage(page){
+  const map={dashboard:loadDashboard,veterans:loadVeterans,pensions:loadPensions,
+             nominees:loadNominees,regiments:loadRegiments,ranklog:loadRankLog,schema:loadSchema};
+  if(map[page])map[page]();
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────
+async function loadDashboard(){
+  try{
+    const[stats,recent,topPen]=await Promise.all([
+      apiFetch('/api/stats'),apiFetch('/api/recent_veterans'),apiFetch('/api/top_pensions')
+    ]);
+    const cards=[
+      {label:'TOTAL VETERANS',    value:fmtN(stats.veterans),                                 icon:'✦',sub:'registered personnel'},
+      {label:'ACTIVE PENSIONERS', value:fmtN(stats.active_pensions),                          icon:'₹',sub:'drawing pension'},
+      {label:'NOMINEES',          value:fmtN(stats.nominees),                                  icon:'◉',sub:'family beneficiaries'},
+      {label:'REGIMENTS',         value:fmtN(stats.regiments),                                 icon:'⚑',sub:'military units'},
+      {label:'MONTHLY OUTFLOW',   value:'₹ '+fmtN(Math.round(stats.monthly_disbursement||0)), icon:'◈',sub:'DA-adjusted total',cls:'rupee'},
+    ];
+    document.getElementById('stat-grid').innerHTML=cards.map(c=>`
+      <div class="stat-card">
+        <div class="stat-label">${c.label}</div>
+        <div class="stat-value ${c.cls||''}">${c.value}</div>
+        <div class="stat-sub">${c.sub}</div>
+        <div class="stat-icon">${c.icon}</div>
+      </div>`).join('');
+
+    document.getElementById('rv-count').textContent=recent.length+' ENTRIES';
+    document.getElementById('tbl-recent').innerHTML=recent.length
+      ?recent.map(r=>`<tr>
+          <td class="name">${r.NAME||'—'}</td>
+          <td class="rank">${r.rank_name||'—'}</td>
+          <td>${r.REGIMENT||'—'}</td>
+          <td>${fmtD(r.DISCHARGE_DATE)}</td>
+        </tr>`).join('')
+      :'<tr class="empty-row"><td colspan="4">NO DATA</td></tr>';
+
+    document.getElementById('tp-count').textContent=topPen.length+' ENTRIES';
+    document.getElementById('tbl-top-pensions').innerHTML=topPen.length
+      ?topPen.map(p=>`<tr>
+          <td class="name">${p.NAME||'—'}</td>
+          <td class="rank">${p.rank_name||'—'}</td>
+          <td class="amount">${fmtN(p.AMOUNT)}</td>
+          <td>${p.DA_PERCENT||0}%</td>
+          <td class="amount">${fmtN(p.TOTAL)}</td>
+          <td class="${statusClass(p.STATUS)}">${p.STATUS||'—'}</td>
+        </tr>`).join('')
+      :'<tr class="empty-row"><td colspan="6">NO DATA</td></tr>';
+
+  }catch(e){
+    document.getElementById('stat-grid').innerHTML='<div class="loader">&#9888; CONNECTION ERROR — IS FLASK RUNNING?</div>';
+  }
+}
+
+// ── VETERANS ──────────────────────────────────────────────────
+// Returns: VID, NAME, rank_name, DOB, DISCHARGE_DATE, SERVICE_YEARS, REGIMENT, STATUS
+async function loadVeterans(){
+  try{
+    const rows=await apiFetch('/api/veterans');
+    document.getElementById('vet-count').textContent=rows.length+' RECORDS';
+    document.getElementById('tbl-veterans').innerHTML=rows.length
+      ?rows.map(r=>`<tr>
+          <td>${r.VID}</td>
+          <td class="name">${r.NAME||'—'}</td>
+          <td class="rank">${r.rank_name||'—'}</td>
+          <td>${fmtD(r.DOB)}</td>
+          <td>${fmtD(r.DISCHARGE_DATE)}</td>
+          <td>${r.SERVICE_YEARS!=null?r.SERVICE_YEARS+' yrs':'—'}</td>
+          <td>${r.REGIMENT||'—'}</td>
+          <td class="${statusClass(r.STATUS)}">${r.STATUS||'—'}</td>
+          <td>
+            <button class="btn btn-sm btn-rank"
+              onclick="openUpdateRankModal(${r.VID},'${(r.NAME||'').replace(/'/g,"\\'")}','${r.rank_name||''}')">
+              &#8593; Rank
+            </button>
+          </td>
+        </tr>`).join('')
+      :'<tr class="empty-row"><td colspan="9">NO RECORDS</td></tr>';
+  }catch(e){
+    document.getElementById('tbl-veterans').innerHTML='<tr class="empty-row"><td colspan="9">&#9888; FETCH ERROR</td></tr>';
+  }
+}
+
+// ── PENSIONS ──────────────────────────────────────────────────
+async function loadPensions(){
+  try{
+    const rows=await apiFetch('/api/pensions');
+    document.getElementById('pen-count').textContent=rows.length+' RECORDS';
+    document.getElementById('tbl-pensions').innerHTML=rows.length
+      ?rows.map(r=>`<tr>
+          <td>${r.PID}</td>
+          <td class="name">${r.NAME||'—'}</td>
+          <td class="rank">${r.rank_name||'—'}</td>
+          <td class="amount">${fmtN(r.AMOUNT)}</td>
+          <td>${r.DA_PERCENT||0}%</td>
+          <td class="amount">${fmtN(r.TOTAL)}</td>
+          <td class="${statusClass(r.STATUS)}">${r.STATUS||'—'}</td>
+          <td>${fmtD(r.START_DATE)}</td>
+        </tr>`).join('')
+      :'<tr class="empty-row"><td colspan="8">NO RECORDS</td></tr>';
+  }catch(e){
+    document.getElementById('tbl-pensions').innerHTML='<tr class="empty-row"><td colspan="8">&#9888; FETCH ERROR</td></tr>';
+  }
+}
+
+// ── NOMINEES ──────────────────────────────────────────────────
+async function loadNominees(){
+  try{
+    const rows=await apiFetch('/api/nominees');
+    document.getElementById('nom-count').textContent=rows.length+' RECORDS';
+    document.getElementById('tbl-nominees').innerHTML=rows.length
+      ?rows.map(r=>`<tr>
+          <td>${r.NID}</td>
+          <td class="name">${r.NOMINEE||'—'}</td>
+          <td>${r.RELATION||'—'}</td>
+          <td>${r.VETERAN||'—'}</td>
+          <td class="share">${r.SHARE_PERCENT!=null?r.SHARE_PERCENT+'%':'—'}</td>
+        </tr>`).join('')
+      :'<tr class="empty-row"><td colspan="5">NO RECORDS</td></tr>';
+  }catch(e){
+    document.getElementById('tbl-nominees').innerHTML='<tr class="empty-row"><td colspan="5">&#9888; FETCH ERROR</td></tr>';
+  }
+}
+
+// ── REGIMENTS ─────────────────────────────────────────────────
+async function loadRegiments(){
+  try{
+    const rows=await apiFetch('/api/regiments');
+    document.getElementById('rgt-count').textContent=rows.length+' UNITS';
+    const max=Math.max(...rows.map(r=>r.VETERAN_COUNT||0),1);
+    document.getElementById('rgt-grid').innerHTML=rows.length
+      ?rows.map(r=>`
+          <div class="rgt-card">
+            <div class="rgt-name">${r.NAME||'—'}</div>
+            <div class="rgt-meta">${r.LOCATION||'—'} · ${r.ARM||'—'}</div>
+            <div class="rgt-bar-bg"><div class="rgt-bar" style="width:${Math.round((r.VETERAN_COUNT||0)/max*100)}%"></div></div>
+            <div class="rgt-count">${r.VETERAN_COUNT||0} VETERAN${r.VETERAN_COUNT!==1?'S':''}</div>
+          </div>`).join('')
+      :'<div class="loader">NO UNITS FOUND</div>';
+  }catch(e){
+    document.getElementById('rgt-grid').innerHTML='<div class="loader">&#9888; FETCH ERROR</div>';
+  }
+}
+
+// ── RANK LOG ──────────────────────────────────────────────────
+async function loadRankLog(){
+  try{
+    const rows=await apiFetch('/api/rank_log');
+    document.getElementById('rl-count').textContent=rows.length+' EVENTS';
+    document.getElementById('tbl-ranklog').innerHTML=rows.length
+      ?rows.map(r=>`<tr>
+          <td>${r.VID}</td>
+          <td class="name">${r.NAME||'—'}</td>
+          <td class="rank">${r.OLD_RANK||'—'}</td>
+          <td class="active">${r.NEW_RANK||'—'}</td>
+          <td>${fmtD(r.CHANGED_AT)}</td>
+          <td>${r.CHANGED_BY||'—'}</td>
+        </tr>`).join('')
+      :'<tr class="empty-row"><td colspan="6">NO AUDIT EVENTS</td></tr>';
+  }catch(e){
+    document.getElementById('tbl-ranklog').innerHTML='<tr class="empty-row"><td colspan="6">&#9888; FETCH ERROR</td></tr>';
+  }
+}
+
+// ── SCHEMA ────────────────────────────────────────────────────
+async function loadSchema(){
+  try{
+    const rows=await apiFetch('/api/schema');
+    document.getElementById('schema-count').textContent=rows.length+' TABLES';
+    document.getElementById('tbl-schema').innerHTML=rows.length
+      ?rows.map(r=>`<tr>
+          <td class="name">${r.TABLE_NAME}</td>
+          <td>${r.TABLE_ROWS!=null?fmtN(r.TABLE_ROWS):'—'}</td>
+          <td>${r.CREATE_TIME?String(r.CREATE_TIME).slice(0,10):'—'}</td>
+        </tr>`).join('')
+      :'<tr class="empty-row"><td colspan="3">NO TABLES</td></tr>';
+  }catch(e){
+    document.getElementById('tbl-schema').innerHTML='<tr class="empty-row"><td colspan="3">&#9888; FETCH ERROR</td></tr>';
+  }
+}
+
+// ── Search filter ─────────────────────────────────────────────
+function filterTable(tbodyId,q){
+  const val=q.toLowerCase();
+  document.getElementById(tbodyId).querySelectorAll('tr').forEach(tr=>{
+    tr.style.display=(!val||tr.textContent.toLowerCase().includes(val))?'':'none';
+  });
+}
+
+// ════════════════════════════════════════════════════
+// ADD VETERAN MODAL LOGIC
+// ════════════════════════════════════════════════════
+
+async function openAddVeteranModal(){
+  // Populate regiment dropdown from live API
+  try{
+    const regs=await apiFetch('/api/regiments');
+    document.getElementById('av-regiment').innerHTML=
+      '<option value="">— Select Regiment —</option>'+
+      regs.map(r=>`<option value="${r.RID}">${r.NAME}</option>`).join('');
+  }catch(e){
+    document.getElementById('av-regiment').innerHTML='<option value="">— Could not load regiments —</option>';
+  }
+  // Clear all fields
+  ['av-vid','av-name','av-svc','av-dob','av-enlist','av-retire','av-state','av-contact'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+  ['av-gender','av-rank','av-status','av-regiment'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+  document.getElementById('av-status-msg').textContent='';
+  openModal('modal-add-veteran');
+}
+
+async function submitAddVeteran(){
+  const msg=document.getElementById('av-status-msg');
+  msg.textContent='PROCESSING...';
+  msg.style.color='var(--text3)';
+
+  const payload={
+    veteran_id:         document.getElementById('av-vid').value.trim(),
+    full_name:          document.getElementById('av-name').value.trim(),
+    service_number:     document.getElementById('av-svc').value.trim(),
+    gender:             document.getElementById('av-gender').value,
+    date_of_birth:      document.getElementById('av-dob').value,
+    date_of_enlistment: document.getElementById('av-enlist').value,
+    date_of_retirement: document.getElementById('av-retire').value||null,
+    rank_name:          document.getElementById('av-rank').value,
+    status:             document.getElementById('av-status').value,
+    regiment_id:        document.getElementById('av-regiment').value,
+    state_of_domicile:  document.getElementById('av-state').value.trim()||null,
+    contact_number:     document.getElementById('av-contact').value.trim()||null,
+  };
+
+  try{
+    const res=await apiFetch('/api/veterans/add',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    closeModal('modal-add-veteran');
+    toast(`✓ ${res.message}  (ID: ${res.veteran_id})`,'success');
+    // Refresh veterans table and dashboard stats
+    delete loaded['veterans'];
+    delete loaded['dashboard'];
+    if(document.getElementById('page-veterans').classList.contains('active')){
+      loaded['veterans']=true;loadVeterans();
+    }
+    if(document.getElementById('page-dashboard').classList.contains('active')){
+      loaded['dashboard']=true;loadDashboard();
+    }
+  }catch(e){
+    msg.textContent='ERROR: '+e.message;
+    msg.style.color='var(--red)';
+  }
+}
+
+// ════════════════════════════════════════════════════
+// UPDATE RANK MODAL LOGIC
+// ════════════════════════════════════════════════════
+
+let _urVid=null;
+
+function openUpdateRankModal(vid, name, currentRank){
+  _urVid=vid;
+  document.getElementById('ur-vid').textContent=vid;
+  document.getElementById('ur-name').textContent=name;
+  document.getElementById('ur-current-rank').textContent=currentRank;
+  document.getElementById('ur-rank').value='';
+  document.getElementById('ur-status-msg').textContent='';
+  openModal('modal-update-rank');
+}
+
+async function submitUpdateRank(){
+  const msg=document.getElementById('ur-status-msg');
+  const newRank=document.getElementById('ur-rank').value;
+  if(!newRank){msg.textContent='SELECT A RANK';msg.style.color='var(--red)';return;}
+
+  msg.textContent='UPDATING...';
+  msg.style.color='var(--text3)';
+
+  try{
+    const res=await apiFetch(`/api/veterans/${_urVid}/rank`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({new_rank:newRank})
+    });
+    closeModal('modal-update-rank');
+    toast(`↑ ${res.name}: ${res.old_rank} → ${res.new_rank} · Trigger logged to RANK_HISTORY`,'success');
+
+    // Refresh veterans + rank log + dashboard
+    ['veterans','ranklog','dashboard'].forEach(p=>{
+      delete loaded[p];
+      if(document.getElementById('page-'+p).classList.contains('active')){
+        loaded[p]=true;loadPage(p);
+      }
+    });
+  }catch(e){
+    msg.textContent='ERROR: '+e.message;
+    msg.style.color='var(--red)';
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────────
+loaded['dashboard']=true;
+loadDashboard();
+</script>
+</body>
+</html>
